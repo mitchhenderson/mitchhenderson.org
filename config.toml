@@ -72,14 +72,14 @@ googleAnalytics = "UA-154979770-1"
 [menu]
 
   [[menu.main]]
+    name = "Start here"
+    url = "about/"
+    weight = 20
+
+  [[menu.main]]
     name = "Posts"
     url = "posts/"
     weight = 10
-
-  [[menu.main]]
-    name = "About"
-    url = "about/"
-    weight = 20
     
   [[menu.main]]
     name = "Subscribe"
