@@ -1,5 +1,5 @@
 +++
-title = "Start here"
+title = ""
 +++
 
 <img src="/./about-hugo_files/mug.png" alt="headshot" align="right" width="40%" height="40%" id="hp"/>

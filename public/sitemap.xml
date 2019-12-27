@@ -3,27 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/about/</loc>
+    <loc>/start-here/</loc>
+    <lastmod>2019-12-27T15:50:00+11:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/example-post/</loc>
+    <lastmod>2019-12-25T21:48:37+11:00</lastmod>
   </url>
   
   <url>
     <loc>/</loc>
+    <lastmod>2019-12-27T15:50:00+11:00</lastmod>
   </url>
   
   <url>
     <loc>/posts/</loc>
+    <lastmod>2019-12-25T21:48:37+11:00</lastmod>
   </url>
   
   <url>
     <loc>/contact/</loc>
+    <lastmod>2019-12-25T21:48:37+11:00</lastmod>
   </url>
   
   <url>
     <loc>/subscribe/</loc>
+    <lastmod>2019-12-25T21:48:37+11:00</lastmod>
   </url>
   
   <url>

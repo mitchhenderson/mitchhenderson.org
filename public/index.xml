@@ -12,14 +12,15 @@
     
     
     <item>
-      <title>About</title>
-      <link>/about/</link>
+      <title></title>
+      <link>/start-here/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/about/</guid>
-      <description>Hugo is the world’s fastest framework for building websites. It is written in Go.
-It makes use of a variety of open source projects including:
- https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  Learn more and contribute on GitHub.</description>
+      <guid>/start-here/</guid>
+      <description>I&amp;rsquo;m a sports scientist and strength and conditioning coach based in Sydney, Australia.
+I post my work and ideas on maximising sports performance on this site. You&amp;rsquo;ll find practical information on athlete monitoring, training programming, data analysis, and anything else on my mind that I think is useful and interesting when preparing athletes and teams.
+My most popular articles are here:
+ https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  If you want to be updated when I publish something new, you can subscribe.</description>
     </item>
     
     <item>
