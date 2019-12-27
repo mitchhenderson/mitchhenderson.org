@@ -73,7 +73,7 @@ googleAnalytics = "UA-154979770-1"
 
   [[menu.main]]
     name = "Start here"
-    url = "about/"
+    url = "start-here/"
     weight = 10
 
   [[menu.main]]
