@@ -13,13 +13,14 @@
     
     <item>
       <title></title>
-      <link>/start-here/</link>
+      <link>/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/start-here/</guid>
-      <description>I&amp;rsquo;m a sports scientist and strength and conditioning coach based in Sydney, Australia. I post my work and ideas on maximising sports performance on this site. My work and education history can be found in my one-page résumé or full CV.
-My most popular articles are here:
- https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  If you want to be updated when I publish something new, you can subscribe.</description>
+      <guid>/about/</guid>
+      <description>I&amp;rsquo;m a sports scientist and athletic performance coach based in Sydney, Australia.
+I post my work and ideas on maximising sports performance on this site, my Twitter, or my Youtube channel.
+My employment and education history can be found in my one-page résumé or my full CV.
+Feel free to contact me via email or DM me through any of my social media accounts on the home page of this site.</description>
     </item>
     
     <item>
