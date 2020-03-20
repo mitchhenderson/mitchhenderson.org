@@ -6,10 +6,22 @@
     <description>Recent content on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 23 Jul 2015 21:13:14 -0500</lastBuildDate>
+    <lastBuildDate>Fri, 20 Mar 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>I&amp;rsquo;m a sports scientist and athletic performance coach based in Sydney, Australia.
+I&amp;rsquo;ll be posting my work and ideas on maximising sports performance on this site, my Twitter, and my Youtube channel.
+My employment and education history can be found in my one-page résumé or my full CV.
+Feel free to contact me via email or DM me through any of my social media accounts on the sidebar of this site.</description>
+    </item>
     
     <item>
       <title>Hello R Markdown</title>
@@ -137,18 +149,6 @@ summary(cars)## speed dist ## Min. : 4.0 Min. : 2.00 ## 1st Qu.:12.0 1st Qu.: 2
       
       <guid>/2013/01/japanese-test/</guid>
       <description>&lt;p&gt;This is a Japanese test post to show you how japanese is displayed.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/about/</guid>
-      <description>I&amp;rsquo;m a sports scientist and athletic performance coach based in Sydney, Australia.
-I post my work and ideas on maximising sports performance on this site, my Twitter, or my Youtube channel.
-My employment and education history can be found in my one-page résumé or my full CV.
-Feel free to contact me via email or DM me through any of my social media accounts on the home page of this site.</description>
     </item>
     
   </channel>
