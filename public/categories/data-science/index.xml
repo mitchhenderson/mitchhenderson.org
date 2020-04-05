@@ -6,19 +6,10 @@
     <description>Recent content in Data science on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 06 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>How to tidy Catapult 10Hz export data</title>
-      <link>/2020/04/how-to-tidy-catapult-10hz-export-data/</link>
-      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>/2020/04/how-to-tidy-catapult-10hz-export-data/</guid>
-      <description>&lt;p&gt;The export format of Catapult&amp;rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.&lt;/p&gt;</description>
-    </item>
     
     <item>
       <title>How to tidy Catapult 10Hz export data</title>

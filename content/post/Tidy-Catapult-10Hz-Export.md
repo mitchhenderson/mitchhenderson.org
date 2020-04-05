@@ -22,7 +22,7 @@ The export format of Catapult's 10Hz GPS exports is ideal for analysis. This art
 
 # Tidy data
 
-It's been suggested that ~80% of data analysis is spent on the process of cleaning and preparing the data ( [Dasu and Johnson 2003](https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354) ). In  2014, [Hadley Wickham](https://twitter.com/hadleywickham) coined the term [tidy data](https://vita.had.co.nz/papers/tidy-data.pdf) to define a dataset structured to facilitate analysis. In the [R for Data Science book's section on tidy data](https://r4ds.had.co.nz/tidy-data.html), for a dataset to be *tidy* it has to follow these 3 interrelated rules:
+It is often claimed that ~80% of data analysis is spent on the process of cleaning and preparing the data ( [Dasu and Johnson 2003](https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354) ). In  2014, [Hadley Wickham](https://twitter.com/hadleywickham) coined the term [tidy data](https://vita.had.co.nz/papers/tidy-data.pdf) to define a dataset structured to facilitate analysis. In the [R for Data Science book's section on tidy data](https://r4ds.had.co.nz/tidy-data.html), for a dataset to be *tidy* it has to follow these 3 interrelated rules:
 
 1. Each variable must have its own column.
 2. Each observation must have its own row.
@@ -37,7 +37,7 @@ When you export 10Hz GPS data from Catapult's Openfield software, the `.csv` fil
 
 ![](/img/untidy.png)
 
-**Far from ideal.**
+![](/img/batman_facepalm.gif)
 
 It isn't great because:
 
@@ -49,6 +49,8 @@ Without combining all players' data into one *tidy* table or "*dataframe*", we c
 # Solution
 
 Thankfully for us, we don't need to manually go through each file, deleting the top 8 rows, creating new columns for metadata like player name and match, and then copy pasting them all into the one file. The `tidyverse` suite of R packages can help us to largely automate these manual tasks! 
+
+![](/img/batman_thinking.gif)
 
 I will explain how to do it here (and provide you with the R code), and also show you in the YouTube video below.
 
@@ -119,7 +121,9 @@ write.csv(combine_and_tidy, file = paste0(folder_name, "_tidy.csv"), row.names =
 
 ## Step 2
 
-Export the files from Openfield and save them in a folder with an appropriate name **that has 2 parts to it separated by a blank space**. A good example is "Round 1" or "vs Bulldogs" or "Week 2" (these are the examples I've used in the code below). The name is important as the code is looking for a 2-part name to become a column in the final output.
+Export the files from Openfield **without changing their filename** and save them in a folder with an appropriate name **that has 2 parts to it separated by a blank space**. A good example is "Round 1" or "vs Bulldogs" or "Week 2" (these are the examples I've used in the code below). 
+
+The name is important as the code is looking for a 2-part name to become a column in the final output.
 
 ## Step 3
 
@@ -127,29 +131,37 @@ Put the folder (or folders) created in Step 1 into a parent folder. Name this an
 
 This folder needs to become your working directory when you run the code. If you aren't familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.
 
-In my code below I've manually set the working directory to my Desktop. This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to set your working directory. 
+In my code below I've manually set the working directory to my Desktop. This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory. 
 
 I highly recommend you become familiar with [project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) and RStudio's Project capabilities because this essentially shifts working directories for you.
 
 ## Step 4
 
-Change the code's `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. In my code, I've called it "Round 1". Like I mentioned in Step 2, for the code to work the name **MUST** be 2 parts separated by a space. 
+Change the code's `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. 
+
+In my code, I've called it "Round 1". 
+
+Like I mentioned in Step 2, for the code to work the name **MUST** be 2 parts separated by a space. 
 
 ## Step 5
 
 Highlight the entire code and press Ctrl + Enter (Cmd + Return on a Mac). This will run the code and carry out the tasks of:
 
-1. Pulling in each `.csv` file's data within the folder you've referenced with `folder_name` (assuming the folder is in your working directory).
+1. Pulling in each `.csv` file's data within the folder you've referenced with `folder_name` (assuming that folder is within your working directory).
 2. Remove the 8 rows of metadata from the top of each file.
-3. Create new columns for player name and activity derived from the `.csv`'s file name, and a column for the `folder_name` variable derived from the R code you entered.
+3. Create new columns for player name and activity derived from the `.csv`'s file name generated by Openfield, and a new column for the `folder_name` variable derived from the R code you entered.
 4. Combine all files into one *dataframe*.
 5. Export this dataframe into a new `.csv` called "`folder_name`_tidy.csv" in your working directory. Where the `folder_name` part of the new file name is what you entered in the code (e.g. the name of my file would be "Round 1_tidy.csv").
 
-# Conclusion & Video
+![](/img/batcomputer.gif)
+
+# Conclusion & tutorial
 
 Now the data is in *tidy* format and is easy to manipulate and analyse!
 
 ![](/img/tidy_gps.png)
+
+![](/img/batman_thumbsup.gif)
 
 You can see me going through all the steps outlined here in this video with some dummy data:
 
