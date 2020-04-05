@@ -1,7 +1,7 @@
 ---
 title: How to tidy Catapult 10Hz export data
 author: Mitch Henderson
-date: '2020-04-06'
+date: '2020-04-05'
 categories:
   - Data science
   - Sports science
