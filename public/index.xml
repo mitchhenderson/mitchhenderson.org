@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>How to tidy Catapult 10Hz export data</title>
+      <link>/2020/04/how-to-tidy-catapult-10hz-export-data/</link>
+      <pubDate>Mon, 06 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/how-to-tidy-catapult-10hz-export-data/</guid>
+      <description>&lt;p&gt;The export format of Catapult&amp;rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>About</title>
       <link>/about/</link>
       <pubDate>Fri, 20 Mar 2020 00:00:00 +0000</pubDate>
