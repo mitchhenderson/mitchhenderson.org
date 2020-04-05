@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.59.1 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Mitch Henderson">
+<meta name="keywords" content="">
+<meta name="description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+
+
+<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How to tidy Catapult 10Hz export data">
+<meta name="twitter:title" content="How to tidy Catapult 10Hz export data">
+<meta property="og:url" content="/2020/04/how-to-tidy-catapult-10hz-export-data/">
+<meta property="twitter:url" content="/2020/04/how-to-tidy-catapult-10hz-export-data/">
+<meta property="og:site_name" content="mitchhenderson.org">
+<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta name="twitter:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-04-06T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2020-04-06T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="Sports science">
+    
+      <meta property="article:section" content="Data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="GPS">
+    
+      <meta property="article:tag" content="R">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@mitchhendo_">
+
+
+  <meta name="twitter:creator" content="@mitchhendo_">
+
+
+
+
+
+
+  <meta property="og:image" content="/img/catapult_square.jpg">
+  <meta property="twitter:image" content="/img/catapult_square.jpg">
+
+
+  <meta property="og:image" content="/img/catapult_cover.png">
+  <meta property="twitter:image" content="/img/catapult_cover.png">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+
+
+    <title>How to tidy Catapult 10Hz export data</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2020/04/how-to-tidy-catapult-10hz-export-data/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-154979770-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">mitchhenderson.org</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Mitch Henderson</h4>
+        
+          <h5 class="sidebar-profile-bio">Athletic Performance Coach<br>Sports Scientist</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-user"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="mailto:mail@mitchhenderson.org" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-envelope"></i>
+      
+      <span class="sidebar-button-desc">Email</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-youtube"></i>
+      
+      <span class="sidebar-button-desc">YouTube</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/mitchhenderson">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/img/catapult_cover.png')"
+       data-behavior="5">
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaOut
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      How to tidy Catapult 10Hz export data
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-04-06T00:00:00Z">
+        
+  April 6, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/sports-science">Sports science</a>, 
+    
+      <a class="category-link" href="/categories/data-science">Data science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.</p>
+
+<h1 id="tidy-data">Tidy data</h1>
+
+<p>It&rsquo;s been suggested that ~80% of data analysis is spent on the process of cleaning and preparing the data ( <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354">Dasu and Johnson 2003</a> ). In  2014, <a href="https://twitter.com/hadleywickham">Hadley Wickham</a> coined the term <a href="https://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> to define a dataset structured to facilitate analysis. In the <a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science book&rsquo;s section on tidy data</a>, for a dataset to be <em>tidy</em> it has to follow these 3 interrelated rules:</p>
+
+<ol>
+<li>Each variable must have its own column.</li>
+<li>Each observation must have its own row.</li>
+<li>Each value must have it&rsquo;s own cell.</li>
+</ol>
+
+<p><img src="/img/tidy_data.png" alt="" />
+<em>Following three rules makes a dataset tidy: variables are in columns, observations are in rows, and values are in cells. Image from <a href="https://r4ds.had.co.nz/index.html">R for Data Science</a> by Hadley Wickham &amp; Garrett Grolemund.</em></p>
+
+<h1 id="catapult-data">Catapult data</h1>
+
+<p>When you export 10Hz GPS data from Catapult&rsquo;s Openfield software, the <code>.csv</code> file produced from each unit looks like this:</p>
+
+<p><img src="/img/untidy.png" alt="" /></p>
+
+<p><strong>Far from ideal.</strong></p>
+
+<p>It isn&rsquo;t great because:</p>
+
+<ol>
+<li>Each unit has produced it&rsquo;s own <code>.csv</code> file meaning to do any analysis using all players data we need to find a way to combine all the files.</li>
+<li>There are 8 rows of metadata above the actual data we&rsquo;re primarily interested in, preventing us from combining in it&rsquo;s current format.</li>
+</ol>
+
+<p>Without combining all players&rsquo; data into one <em>tidy</em> table or &ldquo;<em>dataframe</em>&rdquo;, we can&rsquo;t explore the data using the common data exploration tools such as a PivotTable on Microsoft Excel or more advanced data manipulation tools like the <code>dplyr</code> R package.</p>
+
+<h1 id="solution">Solution</h1>
+
+<p>Thankfully for us, we don&rsquo;t need to manually go through each file, deleting the top 8 rows, creating new columns for metadata like player name and match, and then copy pasting them all into the one file. The <code>tidyverse</code> suite of R packages can help us to largely automate these manual tasks!</p>
+
+<p>I will explain how to do it here (and provide you with the R code), and also show you in the YouTube video below.</p>
+
+<h2 id="step-1">Step 1</h2>
+
+<p>Make sure you have <a href="https://cran.r-project.org/">R</a> and <a href="https://rstudio.com/products/rstudio/download/">RStudio</a> downloaded and installed on your machine (both free!).</p>
+
+<p>Open RStudio, copy and paste the code below into a script (you can create a new R script by clicking the symbol directly under &lsquo;File&rsquo; on the top-left of the window, and selecting &lsquo;R Script&rsquo;).</p>
+
+<p>Save the file as a <code>.R</code> file with an appropriate name (e.g. &ldquo;tidy_catapult_data.R&rdquo;).</p>
+
+<pre><code># Script to combine and tidy multiple Catapult Openfield 10Hz export .csv files by Mitch Henderson
+# www.mitchhenderson.org
+
+library(tidyverse)
+library(zoo)
+library(magrittr)
+
+# Set working directory (ideally you will learn project based workflow in RStudio and this part becomes redundant)
+
+setwd(&quot;C:/Users/Mitch.Henderson/folder_containing_folders_of_csv_files&quot;)
+
+# Add metadata for these files that will become a column in the final output. This must exactly match the folder name containing the .csv files and MUST be 2 words separated by a space (e.g. &quot;Round 1&quot; or &quot;vs Bulldogs&quot; or &quot;Week 2&quot;).
+
+folder_name &lt;- &quot;Round 1&quot; 
+
+# This function will read in multiple .csv files, create a column with the file name, and parse it into it's relevant components.
+
+read_plus &lt;- function(flnm) {
+  read_csv(flnm, skip = 8)[, c(
+    &quot;Timestamp&quot;,
+    &quot;Latitude&quot;,
+    &quot;Longitude&quot;,
+    &quot;Seconds&quot;,
+    &quot;Velocity&quot;,
+    &quot;Acceleration&quot;,
+    &quot;Odometer&quot;,
+    &quot;Heart Rate&quot;,
+    &quot;Player Load&quot;,
+    &quot;Positional Quality (%)&quot;,
+    &quot;HDOP&quot;,
+    &quot;#Sats&quot;
+  )] %&gt;%
+    mutate(Filename = flnm,
+           Folder = str_split(Filename, &quot;/&quot;)[[1]][2],
+           Activity_interim = str_split(Filename, &quot;/&quot;)[[1]][3],
+           Activity_interim2 = str_split(Activity_interim, &quot; for &quot;)[[1]][1],
+           Activity = str_split(Activity_interim2, &quot; Export&quot;)[[1]][1],
+           Player_interim = str_split(Activity_interim, &quot; for &quot;)[[1]][2],
+           Player = paste0(str_split(Player_interim, &quot; &quot;)[[1]][1], &quot; &quot;, str_split(Player_interim, &quot; &quot;)[[1]][2])
+    ) %&gt;%
+    select(-Filename, -Activity_interim, -Activity_interim2, -Player_interim)
+}
+
+# Import data from files contained within the folder specified by `folder_name` above (folder must be in working directory)
+
+combine_and_tidy &lt;-
+  list.files(path = paste0(&quot;./&quot;, folder_name, &quot;/&quot;),
+             pattern = &quot;*.csv&quot;, 
+             full.names = T) %&gt;%
+    map_df(~read_plus(.))
+    
+# Output csv into working directory (folder containing the folders of csv files)
+
+write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), row.names = F)
+</code></pre>
+
+<h2 id="step-2">Step 2</h2>
+
+<p>Export the files from Openfield and save them in a folder with an appropriate name <strong>that has 2 parts to it separated by a blank space</strong>. A good example is &ldquo;Round 1&rdquo; or &ldquo;vs Bulldogs&rdquo; or &ldquo;Week 2&rdquo; (these are the examples I&rsquo;ve used in the code below). The name is important as the code is looking for a 2-part name to become a column in the final output.</p>
+
+<h2 id="step-3">Step 3</h2>
+
+<p>Put the folder (or folders) created in Step 1 into a parent folder. Name this anything you like.</p>
+
+<p>This folder needs to become your working directory when you run the code. If you aren&rsquo;t familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.</p>
+
+<p>In my code below I&rsquo;ve manually set the working directory to my Desktop. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to set your working directory.</p>
+
+<p>I highly recommend you become familiar with <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">project-oriented workflow</a> and RStudio&rsquo;s Project capabilities because this essentially shifts working directories for you.</p>
+
+<h2 id="step-4">Step 4</h2>
+
+<p>Change the code&rsquo;s <code>folder_name</code> variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the <code>.csv</code> files you would like to combine and tidy. In my code, I&rsquo;ve called it &ldquo;Round 1&rdquo;. Like I mentioned in Step 2, for the code to work the name <strong>MUST</strong> be 2 parts separated by a space.</p>
+
+<h2 id="step-5">Step 5</h2>
+
+<p>Highlight the entire code and press Ctrl + Enter (Cmd + Return on a Mac). This will run the code and carry out the tasks of:</p>
+
+<ol>
+<li>Pulling in each <code>.csv</code> file&rsquo;s data within the folder you&rsquo;ve referenced with <code>folder_name</code> (assuming the folder is in your working directory).</li>
+<li>Remove the 8 rows of metadata from the top of each file.</li>
+<li>Create new columns for player name and activity derived from the <code>.csv</code>&rsquo;s file name, and a column for the <code>folder_name</code> variable derived from the R code you entered.</li>
+<li>Combine all files into one <em>dataframe</em>.</li>
+<li>Export this dataframe into a new <code>.csv</code> called &ldquo;<code>folder_name</code>_tidy.csv&rdquo; in your working directory. Where the <code>folder_name</code> part of the new file name is what you entered in the code (e.g. the name of my file would be &ldquo;Round 1_tidy.csv&rdquo;).</li>
+</ol>
+
+<h1 id="conclusion-video">Conclusion &amp; Video</h1>
+
+<p>Now the data is in <em>tidy</em> format and is easy to manipulate and analyse!</p>
+
+<p><img src="/img/tidy_gps.png" alt="" /></p>
+
+<p>You can see me going through all the steps outlined here in this video with some dummy data:</p>
+
+<p>VID HERE</p>
+
+<p>Let me know if this post has helped you or if there&rsquo;s anything else you&rsquo;re interested in learning that I can help with. I&rsquo;m keen to hear!</p>
+
+<p><strong>Keep up to date with anything new from me on <a href="https://twitter.com/mitchhendo_">my Twitter</a>.</strong></p>
+
+<p>Cheers,</p>
+
+<p>Mitch</p>
+
+<p><em>Cover image and thumbnail from <a href="www.catapultsports.com">catapultsports.com</a>.</em></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/gps/">GPS</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/r/">R</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/04/how-to-tidy-catapult-10hz-export-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Mitch Henderson. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/04/how-to-tidy-catapult-10hz-export-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2020%2F04%2Fhow-to-tidy-catapult-10hz-export-data%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Mitch Henderson</h4>
+    
+      <div id="about-card-bio">Athletic Performance Coach<br>Sports Scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Australian Mens 7s<br>Rugby Australia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sydney, Australia
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/images/black.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2020\/04\/how-to-tidy-catapult-10hz-export-data\/';
+          
+            this.page.identifier = '\/2020\/04\/how-to-tidy-catapult-10hz-export-data\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'mitchhenderson-org';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
