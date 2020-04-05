@@ -1,17 +1,19 @@
 ---
+title: How to tidy Catapult 10Hz export data
+author: Mitch Henderson
+date: '2020-04-06'
 categories:
-- Sports science
-- Data science
+  - Data science
+  - Sports science
+tags:
+  - GPS
+  - R
 coverImage: /img/catapult_cover.png
 coverMeta: out
-date: "2020-04-06"
 metaAlignment: center
-tags:
-- GPS
-- R
 thumbnailImage: /img/catapult_square.jpg
 thumbnailImagePosition: left
-title: How to tidy Catapult 10Hz export data
+
 ---
 
 The export format of Catapult's 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.
