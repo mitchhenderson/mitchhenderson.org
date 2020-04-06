@@ -157,16 +157,16 @@ write.csv(combine_and_tidy, file = paste0(folder_name, "_tidy.csv"), row.names =
 
 ## Step 4
 
-Change the code's working directory to navigate to your parent folder created in Step 1, and change the `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. 
+Change the code's working directory to navigate to your parent folder created in Step 1; and change the `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. 
 
 In my code, the folder called "Round 1" has my `.csv` files in it. 
 
-Like I mentioned in Step 2, for the code to work the name **MUST** be 2 parts separated by a space. 
+Like I mentioned in Step 2, for the code to work the folder name containing the files **MUST** be 2 parts separated by a space. 
 
 Highlight the entire code and press Ctrl + Enter (Cmd + Return on a Mac). This will run the code and produce the output `.csv` file in your working directory.
 
 
-# Conclusion & tutorial
+# Done!
 
 Now the data is in *tidy* format and is easy to manipulate and analyse!
 
