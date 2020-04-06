@@ -16,7 +16,7 @@ thumbnailImagePosition: left
 
 ---
 
-The export format of Catapult's 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.
+The export format of Catapult's 10Hz GPS data isn't ideal for analysis. This article teaches you how you can tidy it using R.
 
 <!--more-->
 
@@ -64,7 +64,7 @@ Save the file as a `.R` file with an appropriate name (e.g. "tidy_catapult_data.
 
 ```
 # Script to combine and tidy multiple Catapult Openfield 10Hz export .csv files by Mitch Henderson
-# www.mitchhenderson.org
+# www.mitchhenderson.org/2020/04/how-to-tidy-catapult-10hz-export-data/
 
 library(tidyverse)
 library(zoo)
@@ -72,9 +72,10 @@ library(magrittr)
 
 # Set working directory (ideally you will learn project based workflow in RStudio and this part becomes redundant)
 
-setwd("C:/Users/Mitch.Henderson/folder_containing_folders_of_csv_files")
+setwd("C:/Users/Mitch.Henderson/parent_folder_containing_folders_of_csv_files")
 
-# Add metadata for these files that will become a column in the final output. This must exactly match the folder name containing the .csv files and MUST be 2 words separated by a space (e.g. "Round 1" or "vs Bulldogs" or "Week 2").
+# Add metadata for these files that will become a column in the final output. 
+# This must exactly match the folder name containing the .csv files and MUST be 2 words separated by a space (e.g. "Round 1" or "vs Bulldogs" or "Week 2").
 
 folder_name <- "Round 1" 
 
@@ -112,8 +113,8 @@ combine_and_tidy <-
   list.files(path = paste0("./", folder_name, "/"),
              pattern = "*.csv", 
              full.names = T) %>%
-    map_df(~read_plus(.))
-    
+  map_df(~read_plus(.))
+
 # Output csv into working directory (folder containing the folders of csv files)
 
 write.csv(combine_and_tidy, file = paste0(folder_name, "_tidy.csv"), row.names = F)
