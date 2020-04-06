@@ -41,14 +41,14 @@ When you export 10Hz GPS data from Catapult's Openfield software, the `.csv` fil
 
 It isn't great because:
 
-1. Each unit has produced it's own `.csv` file meaning to do any analysis using all players data we need to find a way to combine all the files.
+1. Each unit has produced it's own `.csv` file, meaning to do any analysis using all players' data we need to find a way to combine the files.
 2. There are 8 rows of metadata above the actual data we're primarily interested in, preventing us from combining in it's current format.
 
-Without combining all players' data into one *tidy* table or "*dataframe*", we can't explore the data using the common data exploration tools such as a PivotTable on Microsoft Excel or more advanced data manipulation tools like the `dplyr` R package. 
+Without combining all players' data into one *tidy* table or "*dataframe*", we can't explore the data using the common tools like a PivotTable on Microsoft Excel or the `dplyr` R package. 
 
 # Solution
 
-Thankfully for us, we don't need to manually go through each file, deleting the top 8 rows, creating new columns for metadata like player name and match, and then copy pasting them all into the one file. The `tidyverse` suite of R packages can help us to largely automate these manual tasks! 
+Thankfully for us, we don't need to manually go through each file, deleting the top 8 rows, creating new columns for the metadata like player name and match, and then copy pasting them all into the one file. The `tidyverse` suite of R packages can help us to largely automate these manual tasks! 
 
 ![](/img/batman_thinking.gif)
 
@@ -132,7 +132,7 @@ Put the folder (or folders) created in Step 1 into a parent folder. Name this an
 
 This folder needs to become your working directory when you run the code. If you aren't familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.
 
-In my code above I've manually set the working directory to a fake folder named "folder_containing_folders_of_csv_files". This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory with the setwd() function. 
+In my code above I've manually set the working directory to a fake folder named "folder_containing_folders_of_csv_files". This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory with the setwd() function. **You need to change the file path in the code to one that navigates the file path on your computer to this parent folder**.
 
 I highly recommend you become familiar with [project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) and RStudio's Project capabilities because this essentially shifts working directories for you.
 

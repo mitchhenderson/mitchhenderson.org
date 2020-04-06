@@ -294,12 +294,12 @@ if (!doNotTrack) {
 <p><img src="/img/batman_facepalm.gif" alt=""></p>
 <p>It isn&rsquo;t great because:</p>
 <ol>
-<li>Each unit has produced it&rsquo;s own <code>.csv</code> file meaning to do any analysis using all players data we need to find a way to combine all the files.</li>
+<li>Each unit has produced it&rsquo;s own <code>.csv</code> file, meaning to do any analysis using all players&rsquo; data we need to find a way to combine the files.</li>
 <li>There are 8 rows of metadata above the actual data we&rsquo;re primarily interested in, preventing us from combining in it&rsquo;s current format.</li>
 </ol>
-<p>Without combining all players&rsquo; data into one <em>tidy</em> table or &ldquo;<em>dataframe</em>&quot;, we can&rsquo;t explore the data using the common data exploration tools such as a PivotTable on Microsoft Excel or more advanced data manipulation tools like the <code>dplyr</code> R package.</p>
+<p>Without combining all players&rsquo; data into one <em>tidy</em> table or &ldquo;<em>dataframe</em>&quot;, we can&rsquo;t explore the data using the common tools like a PivotTable on Microsoft Excel or the <code>dplyr</code> R package.</p>
 <h1 id="solution">Solution</h1>
-<p>Thankfully for us, we don&rsquo;t need to manually go through each file, deleting the top 8 rows, creating new columns for metadata like player name and match, and then copy pasting them all into the one file. The <code>tidyverse</code> suite of R packages can help us to largely automate these manual tasks!</p>
+<p>Thankfully for us, we don&rsquo;t need to manually go through each file, deleting the top 8 rows, creating new columns for the metadata like player name and match, and then copy pasting them all into the one file. The <code>tidyverse</code> suite of R packages can help us to largely automate these manual tasks!</p>
 <p><img src="/img/batman_thinking.gif" alt=""></p>
 <p>I will explain how to do it here (and provide you with the R code), and also show you in the YouTube video below.</p>
 <h2 id="step-1">Step 1</h2>
@@ -367,7 +367,7 @@ write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), r
 <h2 id="step-3">Step 3</h2>
 <p>Put the folder (or folders) created in Step 1 into a parent folder. Name this anything you like.</p>
 <p>This folder needs to become your working directory when you run the code. If you aren&rsquo;t familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.</p>
-<p>In my code above I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the setwd() function.</p>
+<p>In my code above I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the setwd() function. <strong>You need to change the file path in the code to one that navigates the file path on your computer to this parent folder</strong>.</p>
 <p>I highly recommend you become familiar with <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">project-oriented workflow</a> and RStudio&rsquo;s Project capabilities because this essentially shifts working directories for you.</p>
 <h2 id="step-4">Step 4</h2>
 <p>Change the code&rsquo;s <code>folder_name</code> variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the <code>.csv</code> files you would like to combine and tidy.</p>
