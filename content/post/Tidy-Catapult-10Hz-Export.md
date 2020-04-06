@@ -76,10 +76,7 @@ Create a folder that will contain all your folders of Openfield 10Hz exports. Na
 
 This folder needs to become your working directory when you run the code. If you aren't familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.
 
-In my code below I've manually set the working directory to a fake folder named "folder_containing_folders_of_csv_files". This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory with the setwd() function. **You need to change the file path in the code to one that navigates the file path on your computer to this parent folder**.
-
-I highly recommend you become familiar with [project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) and RStudio's Project capabilities because this essentially shifts working directories for you.
-
+In my code below I've manually set the working directory to a fake folder named "folder_containing_folders_of_csv_files". This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory with the setwd() function. **You need to change the file path in the code to one that navigates the file path on your computer to this parent folder**. In the example I go through in [the video above](https://www.youtube.com/watch?v=N0DCRqqSKPw&lc=UgxCPbRiX_kum66VP394AaABAg), you can see I make my working directory "Desktop/Season 2020" and within that parent folder I have "Round 1" containing the actual files.
 
 ## Step 2
 
