@@ -166,7 +166,7 @@ Now the data is in *tidy* format and is easy to manipulate and analyse!
 
 You can see me going through all the steps outlined here in this video with some dummy data:
 
-VID HERE
+{{< youtube N0DCRqqSKPw >}}
 
 Let me know if this post has helped you or if there's anything else you're interested in learning that I can help with. I'm keen to hear!
 

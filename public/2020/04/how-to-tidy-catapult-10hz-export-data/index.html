@@ -8,18 +8,18 @@
 <meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
 <meta name="author" content="Mitch Henderson">
 <meta name="keywords" content="">
-<meta name="description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta name="description" content="The export format of Catapult&rsquo;s 10Hz GPS data isn&rsquo;t ideal for analysis. This article teaches you how you can tidy it using R.">
 
 
-<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS data isn&rsquo;t ideal for analysis. This article teaches you how you can tidy it using R.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="How to tidy Catapult 10Hz export data">
 <meta name="twitter:title" content="How to tidy Catapult 10Hz export data">
 <meta property="og:url" content="/2020/04/how-to-tidy-catapult-10hz-export-data/">
 <meta property="twitter:url" content="/2020/04/how-to-tidy-catapult-10hz-export-data/">
 <meta property="og:site_name" content="mitchhenderson.org">
-<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
-<meta name="twitter:description" content="The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta property="og:description" content="The export format of Catapult&rsquo;s 10Hz GPS data isn&rsquo;t ideal for analysis. This article teaches you how you can tidy it using R.">
+<meta name="twitter:description" content="The export format of Catapult&rsquo;s 10Hz GPS data isn&rsquo;t ideal for analysis. This article teaches you how you can tidy it using R.">
 <meta property="og:locale" content="en-us">
 
   
@@ -278,7 +278,7 @@ if (!doNotTrack) {
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>The export format of Catapult&rsquo;s 10Hz GPS exports is ideal for analysis. This article teaches you how you can tidy it using R.</p>
+              <p>The export format of Catapult&rsquo;s 10Hz GPS data isn&rsquo;t ideal for analysis. This article teaches you how you can tidy it using R.</p>
 <h1 id="tidy-data">Tidy data</h1>
 <p>It is often claimed that ~80% of data analysis is spent on the process of cleaning and preparing the data ( <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354">Dasu and Johnson 2003</a> ). In  2014, <a href="https://twitter.com/hadleywickham">Hadley Wickham</a> coined the term <a href="https://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> to define a dataset structured to facilitate analysis. In the <a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science book&rsquo;s section on tidy data</a>, for a dataset to be <em>tidy</em> it has to follow these 3 interrelated rules:</p>
 <ol>
@@ -307,7 +307,7 @@ if (!doNotTrack) {
 <p>Open RStudio, copy and paste the code below into a script (you can create a new R script by clicking the symbol directly under &lsquo;File&rsquo; on the top-left of the window, and selecting &lsquo;R Script&rsquo;).</p>
 <p>Save the file as a <code>.R</code> file with an appropriate name (e.g. &ldquo;tidy_catapult_data.R&rdquo;).</p>
 <pre><code># Script to combine and tidy multiple Catapult Openfield 10Hz export .csv files by Mitch Henderson
-# www.mitchhenderson.org
+# www.mitchhenderson.org/2020/04/how-to-tidy-catapult-10hz-export-data/
 
 library(tidyverse)
 library(zoo)
@@ -315,9 +315,10 @@ library(magrittr)
 
 # Set working directory (ideally you will learn project based workflow in RStudio and this part becomes redundant)
 
-setwd(&quot;C:/Users/Mitch.Henderson/folder_containing_folders_of_csv_files&quot;)
+setwd(&quot;C:/Users/Mitch.Henderson/parent_folder_containing_folders_of_csv_files&quot;)
 
-# Add metadata for these files that will become a column in the final output. This must exactly match the folder name containing the .csv files and MUST be 2 words separated by a space (e.g. &quot;Round 1&quot; or &quot;vs Bulldogs&quot; or &quot;Week 2&quot;).
+# Add metadata for these files that will become a column in the final output. 
+# This must exactly match the folder name containing the .csv files and MUST be 2 words separated by a space (e.g. &quot;Round 1&quot; or &quot;vs Bulldogs&quot; or &quot;Week 2&quot;).
 
 folder_name &lt;- &quot;Round 1&quot; 
 
@@ -355,8 +356,8 @@ combine_and_tidy &lt;-
   list.files(path = paste0(&quot;./&quot;, folder_name, &quot;/&quot;),
              pattern = &quot;*.csv&quot;, 
              full.names = T) %&gt;%
-    map_df(~read_plus(.))
-    
+  map_df(~read_plus(.))
+
 # Output csv into working directory (folder containing the folders of csv files)
 
 write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), row.names = F)
@@ -366,7 +367,7 @@ write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), r
 <h2 id="step-3">Step 3</h2>
 <p>Put the folder (or folders) created in Step 1 into a parent folder. Name this anything you like.</p>
 <p>This folder needs to become your working directory when you run the code. If you aren&rsquo;t familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.</p>
-<p>In my code below I&rsquo;ve manually set the working directory to my Desktop. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory.</p>
+<p>In my code above I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the setwd() function.</p>
 <p>I highly recommend you become familiar with <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">project-oriented workflow</a> and RStudio&rsquo;s Project capabilities because this essentially shifts working directories for you.</p>
 <h2 id="step-4">Step 4</h2>
 <p>Change the code&rsquo;s <code>folder_name</code> variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the <code>.csv</code> files you would like to combine and tidy.</p>
@@ -387,7 +388,11 @@ write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), r
 <p><img src="/img/tidy_gps.png" alt=""></p>
 <p><img src="/img/batman_thumbsup.gif" alt=""></p>
 <p>You can see me going through all the steps outlined here in this video with some dummy data:</p>
-<p>VID HERE</p>
+
+<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+  <iframe src="https://www.youtube.com/embed/N0DCRqqSKPw" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
+</div>
+
 <p>Let me know if this post has helped you or if there&rsquo;s anything else you&rsquo;re interested in learning that I can help with. I&rsquo;m keen to hear!</p>
 <p><strong>Keep up to date with anything new from me on <a href="https://twitter.com/mitchhendo_">my Twitter</a>.</strong></p>
 <p>Cheers,</p>
