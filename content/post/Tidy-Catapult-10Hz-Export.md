@@ -131,7 +131,7 @@ Put the folder (or folders) created in Step 1 into a parent folder. Name this an
 
 This folder needs to become your working directory when you run the code. If you aren't familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.
 
-In my code below I've manually set the working directory to my Desktop. This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory. 
+In my code above I've manually set the working directory to a fake folder named "folder_containing_folders_of_csv_files". This is actually poor practice, because no one else will have the same file system as me, but I've done it this way so it's clearer to those new to R how to manually set your working directory with the setwd() function. 
 
 I highly recommend you become familiar with [project-oriented workflow](https://www.tidyverse.org/blog/2017/12/workflow-vs-script/) and RStudio's Project capabilities because this essentially shifts working directories for you.
 
