@@ -83,9 +83,9 @@ I highly recommend you become familiar with [project-oriented workflow](https://
 
 ## Step 2
 
-Export the files from Openfield **without changing their filename** and save them in a folder with an appropriate name **that has 2 parts to it separated by a blank space**. A good example is "Round 1" or "vs Bulldogs" or "Week 2" (these are the examples I've used in the code above). 
+Export the files from Openfield **without changing their filename** and save them in a folder with an appropriate name **that has 2 parts to it separated by a blank space**. A good example is "Round 1" or "vs Bulldogs" or "Week 2" (these are the examples I've used in the code below). 
 
-The name is important as the code is looking for a 2-part name to become a column in the final output.
+The name is important as the code is looking for a 2-part name separated by a space to become a column in the final output.
 
 This folder of `.csv` exports needs to be placed within the parent folder created in Step 1.
 
@@ -157,9 +157,9 @@ write.csv(combine_and_tidy, file = paste0(folder_name, "_tidy.csv"), row.names =
 
 ## Step 4
 
-Change the code's `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. 
+Change the code's working directory to navigate to your parent folder created in Step 1, and change the `folder_name` variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the `.csv` files you would like to combine and tidy. 
 
-In my code, I've called it "Round 1". 
+In my code, the folder called "Round 1" has my `.csv` files in it. 
 
 Like I mentioned in Step 2, for the code to work the name **MUST** be 2 parts separated by a space. 
 

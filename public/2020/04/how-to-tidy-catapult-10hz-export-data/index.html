@@ -324,8 +324,8 @@ if (!doNotTrack) {
 <p>In my code below I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the setwd() function. <strong>You need to change the file path in the code to one that navigates the file path on your computer to this parent folder</strong>.</p>
 <p>I highly recommend you become familiar with <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/">project-oriented workflow</a> and RStudio&rsquo;s Project capabilities because this essentially shifts working directories for you.</p>
 <h2 id="step-2">Step 2</h2>
-<p>Export the files from Openfield <strong>without changing their filename</strong> and save them in a folder with an appropriate name <strong>that has 2 parts to it separated by a blank space</strong>. A good example is &ldquo;Round 1&rdquo; or &ldquo;vs Bulldogs&rdquo; or &ldquo;Week 2&rdquo; (these are the examples I&rsquo;ve used in the code above).</p>
-<p>The name is important as the code is looking for a 2-part name to become a column in the final output.</p>
+<p>Export the files from Openfield <strong>without changing their filename</strong> and save them in a folder with an appropriate name <strong>that has 2 parts to it separated by a blank space</strong>. A good example is &ldquo;Round 1&rdquo; or &ldquo;vs Bulldogs&rdquo; or &ldquo;Week 2&rdquo; (these are the examples I&rsquo;ve used in the code below).</p>
+<p>The name is important as the code is looking for a 2-part name separated by a space to become a column in the final output.</p>
 <p>This folder of <code>.csv</code> exports needs to be placed within the parent folder created in Step 1.</p>
 <h2 id="step-3">Step 3</h2>
 <p>Make sure you have <a href="https://cran.r-project.org/">R</a> and <a href="https://rstudio.com/products/rstudio/download/">RStudio</a> downloaded and installed on your machine (both free!).</p>
@@ -387,8 +387,8 @@ combine_and_tidy &lt;-
 
 write.csv(combine_and_tidy, file = paste0(folder_name, &quot;_tidy.csv&quot;), row.names = F)
 </code></pre><h2 id="step-4">Step 4</h2>
-<p>Change the code&rsquo;s <code>folder_name</code> variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the <code>.csv</code> files you would like to combine and tidy.</p>
-<p>In my code, I&rsquo;ve called it &ldquo;Round 1&rdquo;.</p>
+<p>Change the code&rsquo;s working directory to navigate to your parent folder created in Step 1, and change the <code>folder_name</code> variable to the exact folder name (in brackets/parentheses like is currently in the code) containing the <code>.csv</code> files you would like to combine and tidy.</p>
+<p>In my code, the folder called &ldquo;Round 1&rdquo; has my <code>.csv</code> files in it.</p>
 <p>Like I mentioned in Step 2, for the code to work the name <strong>MUST</strong> be 2 parts separated by a space.</p>
 <p>Highlight the entire code and press Ctrl + Enter (Cmd + Return on a Mac). This will run the code and produce the output <code>.csv</code> file in your working directory.</p>
 <h1 id="conclusion--tutorial">Conclusion &amp; tutorial</h1>
