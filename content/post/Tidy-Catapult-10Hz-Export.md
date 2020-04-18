@@ -58,7 +58,7 @@ Thankfully for us, we don't need to manually go through each file, deleting the 
 
 ![](/img/batman_thinking.gif)
 
-I will explain how to do it here (and provide you with the R code), and also show you in the YouTube video below.
+I'll explain how to do it here (and provide you with the R code), and a working example is in [the YouTube video above](https://www.youtube.com/watch?v=N0DCRqqSKPw&t=11s).
 
 This process will:
 
