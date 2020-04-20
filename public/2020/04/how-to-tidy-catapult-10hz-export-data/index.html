@@ -287,7 +287,7 @@ if (!doNotTrack) {
 </div>
 
 <h1 id="tidy-data">Tidy data</h1>
-<p>It is often claimed that ~80% of data analysis is spent on the process of cleaning and preparing the data ( <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354">Dasu and Johnson 2003</a> ). In  2014, <a href="https://twitter.com/hadleywickham">Hadley Wickham</a> coined the term <a href="https://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> to define a dataset structured to facilitate analysis. In the <a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science book&rsquo;s section on tidy data</a>, for a dataset to be <em>tidy</em> it has to follow these 3 interrelated rules:</p>
+<p>It&rsquo;s claimed that ~80% of data analysis is on the process of cleaning and preparing the data <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354">(1)</a>. In  2014, <a href="https://twitter.com/hadleywickham">Hadley Wickham</a> coined the term <a href="https://vita.had.co.nz/papers/tidy-data.pdf">tidy data</a> to define a dataset structured to facilitate analysis. In the <a href="https://r4ds.had.co.nz/tidy-data.html">R for Data Science book&rsquo;s section on tidy data</a>, for a dataset to be <em>tidy</em> it has to follow these 3 interrelated rules:</p>
 <ol>
 <li>Each variable must have its own column.</li>
 <li>Each observation must have its own row.</li>
@@ -308,7 +308,7 @@ if (!doNotTrack) {
 <h1 id="solution">Solution</h1>
 <p>Thankfully for us, we don&rsquo;t need to manually go through each file, deleting the top 8 rows, creating new columns for the metadata like player name and match, and then copy pasting them all into the one file. The <code>tidyverse</code> suite of R packages can help us to largely automate these manual tasks!</p>
 <p><img src="/img/batman_thinking.gif" alt=""></p>
-<p>I will explain how to do it here (and provide you with the R code), and also show you in the YouTube video below.</p>
+<p>I&rsquo;ll explain how to do it here (and provide you with the R code), and a working example is in <a href="https://www.youtube.com/watch?v=N0DCRqqSKPw&amp;t=11s">the YouTube video above</a>.</p>
 <p>This process will:</p>
 <ol>
 <li>Pull in each <code>.csv</code> file&rsquo;s data within the folder you&rsquo;ve referenced with the <code>folder_name</code> variable (assuming that folder is within your working directory).</li>
@@ -321,7 +321,8 @@ if (!doNotTrack) {
 <h2 id="step-1">Step 1</h2>
 <p>Create a folder that will contain all your folders of Openfield 10Hz exports. Name this anything you like.</p>
 <p>This folder needs to become your working directory when you run the code. If you aren&rsquo;t familiar with a working directory, it is just a file path on your computer that sets the default location of any files you read into R, or save out of R.</p>
-<p>In my code below I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the setwd() function. <strong>You need to change the file path in the code to one that navigates the file path on your computer to this parent folder</strong>. In the example I go through in <a href="https://www.youtube.com/watch?v=N0DCRqqSKPw&amp;lc=UgxCPbRiX_kum66VP394AaABAg">the video above</a>, you can see I make my working directory &ldquo;Desktop/Season 2020&rdquo; and within that parent folder I have &ldquo;Round 1&rdquo; containing the actual files.</p>
+<p>In my code below I&rsquo;ve manually set the working directory to a fake folder named &ldquo;folder_containing_folders_of_csv_files&rdquo;. This is actually poor practice, because no one else will have the same file system as me, but I&rsquo;ve done it this way so it&rsquo;s clearer to those new to R how to manually set your working directory with the <code>setwd()</code> function.</p>
+<p><strong>You need to change the file path in the code to one that navigates the file path on your computer to this parent folder</strong>. In the example I go through in <a href="https://www.youtube.com/watch?v=N0DCRqqSKPw&amp;lc=UgxCPbRiX_kum66VP394AaABAg">the video above</a>, you can see I make my working directory &ldquo;Desktop/Season 2020&rdquo; and within that parent folder I have &ldquo;Round 1&rdquo; containing the actual files.</p>
 <h2 id="step-2">Step 2</h2>
 <p>Export the files from Openfield <strong>without changing their filename</strong> and save them in a folder with an appropriate name <strong>that has 2 parts to it separated by a blank space</strong>. A good example is &ldquo;Round 1&rdquo; or &ldquo;vs Bulldogs&rdquo; or &ldquo;Week 2&rdquo; (these are the examples I&rsquo;ve used in the code below).</p>
 <p>The name is important as the code is looking for a 2-part name separated by a space to become a column in the final output.</p>

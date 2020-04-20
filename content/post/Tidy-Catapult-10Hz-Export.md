@@ -28,7 +28,7 @@ You can see me going through all the steps outlined here in this video with some
 
 # Tidy data
 
-It is often claimed that ~80% of data analysis is spent on the process of cleaning and preparing the data ( [Dasu and Johnson 2003](https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354) ). In  2014, [Hadley Wickham](https://twitter.com/hadleywickham) coined the term [tidy data](https://vita.had.co.nz/papers/tidy-data.pdf) to define a dataset structured to facilitate analysis. In the [R for Data Science book's section on tidy data](https://r4ds.had.co.nz/tidy-data.html), for a dataset to be *tidy* it has to follow these 3 interrelated rules:
+It's claimed that ~80% of data analysis is on the process of cleaning and preparing the data [(1)][Dasu & Johnson]. In  2014, [Hadley Wickham](https://twitter.com/hadleywickham) coined the term [tidy data](https://vita.had.co.nz/papers/tidy-data.pdf) to define a dataset structured to facilitate analysis. In the [R for Data Science book's section on tidy data](https://r4ds.had.co.nz/tidy-data.html), for a dataset to be *tidy* it has to follow these 3 interrelated rules:
 
 1. Each variable must have its own column.
 2. Each observation must have its own row.
@@ -184,3 +184,5 @@ Mitch
 
 
 *Cover image and thumbnail from [catapultsports.com](www.catapultsports.com).*
+
+[Dasu & Johnson]: https://onlinelibrary.wiley.com/doi/book/10.1002/0471448354
