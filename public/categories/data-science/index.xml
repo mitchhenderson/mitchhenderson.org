@@ -6,10 +6,24 @@
     <description>Recent content in Data science on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 05 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/categories/data-science/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>How sports scientists can use ggplot2 in R to make better visualisations</title>
+      <link>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</link>
+      <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Great visualisations help communicate your message more clearly. This post shows you an example of my process.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>How to tidy Catapult 10Hz export data</title>

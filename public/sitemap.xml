@@ -4,12 +4,42 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>/categories/data-science/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/dataviz/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/r/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/sports-science/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2020-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -19,26 +49,6 @@
   
   <url>
     <loc>/2020/04/how-to-tidy-catapult-10hz-export-data/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/r/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/sports-science/</loc>
-    <lastmod>2020-04-05T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
     <lastmod>2020-04-05T00:00:00+00:00</lastmod>
   </url>
   

@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Mitch Henderson">
+<meta name="keywords" content="tech">
+<meta name="description" content="
+
+
+
+Great visualisations help communicate your message more clearly. This post shows you an example of my process.
+">
+
+
+<meta property="og:description" content="
+
+
+
+Great visualisations help communicate your message more clearly. This post shows you an example of my process.
+">
+<meta property="og:type" content="article">
+<meta property="og:title" content="How sports scientists can use ggplot2 in R to make better visualisations">
+<meta name="twitter:title" content="How sports scientists can use ggplot2 in R to make better visualisations">
+<meta property="og:url" content="/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">
+<meta property="twitter:url" content="/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">
+<meta property="og:site_name" content="mitchhenderson.org">
+<meta property="og:description" content="
+
+
+
+Great visualisations help communicate your message more clearly. This post shows you an example of my process.
+">
+<meta name="twitter:description" content="
+
+
+
+Great visualisations help communicate your message more clearly. This post shows you an example of my process.
+">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2020-04-22T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2020-04-22T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="Data science">
+    
+      <meta property="article:section" content="Sports science">
+    
+  
+  
+    
+      <meta property="article:tag" content="dataviz">
+    
+      <meta property="article:tag" content="R">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@mitchhendo_">
+
+
+  <meta name="twitter:creator" content="@mitchhendo_">
+
+
+
+
+
+
+  <meta property="og:image" content="/img/ggplot2.png">
+  <meta property="twitter:image" content="/img/ggplot2.png">
+
+
+  <meta property="og:image" content="/img/tidyverse.png">
+  <meta property="twitter:image" content="/img/tidyverse.png">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+
+
+    <title>How sports scientists can use ggplot2 in R to make better visualisations</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-154979770-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">mitchhenderson.org</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Mitch Henderson</h4>
+        
+          <h5 class="sidebar-profile-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-user"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="mailto:mail@mitchhenderson.org" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-envelope"></i>
+      
+      <span class="sidebar-button-desc">Email</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-youtube"></i>
+      
+      <span class="sidebar-button-desc">YouTube</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/mitchhenderson">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/img/tidyverse.png')"
+       data-behavior="5">
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaOut
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      How sports scientists can use ggplot2 in R to make better visualisations
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2020-04-22T00:00:00Z">
+        
+  April 22, 2020
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="/categories/data-science">Data science</a>, 
+    
+      <a class="category-link" href="/categories/sports-science">Sports science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <blockquote>
+<p>“The ability to take data—to be able to understand it,
+to process it, to extract value from it, to visualize it,
+to communicate it—that’s going to be a hugely
+important skill in the next decades, … because now
+we really do have essentially free and ubiquitous
+data. So the complimentary scarce factor is the
+ability to understand that data and extract value from
+it.”</p>
+<footer>
+— Hal Varian, The McKinsey Quarterly, Jan 2009
+</footer>
+</blockquote>
+<p>Great results and important messages from sports scientists and S&amp;C coaches are too often lost at the final and most important hurdle of the scientific process: <strong>communication</strong>.</p>
+<p>A clear, considered, and engaging visualisation helps by presenting the data in a way that’s digestible to <strong>people</strong>, not just machines.</p>
+<p>On the 13th April 2020, I tweeted a thread of visualisations that I’d made recreating the work of <a href="https://twitter.com/Worville">Tom Worville</a> of <a href="https://theathletic.co.uk/author/tom-worville/">The Athletic</a>.</p>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+Inspired by the work of <a href="https://twitter.com/Worville?ref_src=twsrc%5Etfw"><span class="citation">@Worville</span></a> showing <a href="https://twitter.com/LFC?ref_src=twsrc%5Etfw"><span class="citation">@LFC</span></a>'s age profile over the past few seasons, I tried to recreate his charts for some other competition-winning 🏆 teams over the last few years using <a href="https://twitter.com/hashtag/ggplot?src=hash&amp;ref_src=twsrc%5Etfw">#ggplot</a> in <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a>. A thread.<br><br>1/6 <a href="https://t.co/F9m4oVbLG0">pic.twitter.com/F9m4oVbLG0</a>
+</p>
+— Mitch Henderson (<span class="citation">@mitchhendo_</span>) <a href="https://twitter.com/mitchhendo_/status/1249500020002316289?ref_src=twsrc%5Etfw">April 13, 2020</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>This post will take you through the process of how I generated this one:</p>
+<p><img src="/img/foxes_peak-years.png" /></p>
+<p>The full code will be posted at the end, as throughout the post I’ll be going through parts of it bit by bit.</p>
+<p>If you’d prefer to watch me do it, this video shows me going through the whole process:</p>
+<p><br></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VSrGkZgFP1E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p><br></p>
+<div id="step-1-data-prep" class="section level1">
+<h1>Step 1 | Data prep</h1>
+<div id="collate-the-data" class="section level3">
+<h3>Collate the data</h3>
+<p>The data that we will use needs to be in this format:</p>
+<table class="table" style="font-size: 12px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+player_name
+</th>
+<th style="text-align:center;">
+percent_involvement
+</th>
+<th style="text-align:center;">
+dob
+</th>
+<th style="text-align:center;">
+arrival_at_team
+</th>
+<th style="text-align:center;">
+reference_date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+Andrej Kramaric
+</td>
+<td style="text-align:center;">
+0.0070175
+</td>
+<td style="text-align:center;">
+19/06/1991
+</td>
+<td style="text-align:center;">
+16/01/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Andy King
+</td>
+<td style="text-align:center;">
+0.3105263
+</td>
+<td style="text-align:center;">
+29/10/1988
+</td>
+<td style="text-align:center;">
+1/07/2007
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Christian Fuchs
+</td>
+<td style="text-align:center;">
+0.7926901
+</td>
+<td style="text-align:center;">
+7/04/1986
+</td>
+<td style="text-align:center;">
+1/07/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Daniel Amartey
+</td>
+<td style="text-align:center;">
+0.0304094
+</td>
+<td style="text-align:center;">
+21/12/1994
+</td>
+<td style="text-align:center;">
+22/01/2016
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Danny Drinkwater
+</td>
+<td style="text-align:center;">
+0.8868421
+</td>
+<td style="text-align:center;">
+5/03/1990
+</td>
+<td style="text-align:center;">
+20/01/2012
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Danny Simpson
+</td>
+<td style="text-align:center;">
+0.7631579
+</td>
+<td style="text-align:center;">
+4/01/1987
+</td>
+<td style="text-align:center;">
+30/08/2014
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Demarai Gray
+</td>
+<td style="text-align:center;">
+0.0546784
+</td>
+<td style="text-align:center;">
+28/06/1996
+</td>
+<td style="text-align:center;">
+4/01/2016
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Gokhan Inler
+</td>
+<td style="text-align:center;">
+0.0567251
+</td>
+<td style="text-align:center;">
+27/06/1984
+</td>
+<td style="text-align:center;">
+19/08/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Jamie Vardy
+</td>
+<td style="text-align:center;">
+0.9160819
+</td>
+<td style="text-align:center;">
+11/01/1987
+</td>
+<td style="text-align:center;">
+1/07/2012
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Jeffrey Schlupp
+</td>
+<td style="text-align:center;">
+0.4055556
+</td>
+<td style="text-align:center;">
+23/12/1992
+</td>
+<td style="text-align:center;">
+1/07/2010
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Joe Dodoo
+</td>
+<td style="text-align:center;">
+0.0058480
+</td>
+<td style="text-align:center;">
+29/06/1995
+</td>
+<td style="text-align:center;">
+1/08/2013
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Kasper Schmeichel
+</td>
+<td style="text-align:center;">
+1.0000000
+</td>
+<td style="text-align:center;">
+5/11/1986
+</td>
+<td style="text-align:center;">
+1/07/2011
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Leonardo Ulloa
+</td>
+<td style="text-align:center;">
+0.2877193
+</td>
+<td style="text-align:center;">
+26/07/1986
+</td>
+<td style="text-align:center;">
+22/07/2014
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Marc Albrighton
+</td>
+<td style="text-align:center;">
+0.8038012
+</td>
+<td style="text-align:center;">
+18/11/1989
+</td>
+<td style="text-align:center;">
+1/07/2014
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Marcin Wasilewski
+</td>
+<td style="text-align:center;">
+0.0885965
+</td>
+<td style="text-align:center;">
+9/06/1980
+</td>
+<td style="text-align:center;">
+17/09/2013
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Nathan Dyer
+</td>
+<td style="text-align:center;">
+0.0643275
+</td>
+<td style="text-align:center;">
+29/11/1987
+</td>
+<td style="text-align:center;">
+1/09/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+N’Golo Kante
+</td>
+<td style="text-align:center;">
+0.8836257
+</td>
+<td style="text-align:center;">
+29/03/1991
+</td>
+<td style="text-align:center;">
+3/08/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Ritchie De Laet
+</td>
+<td style="text-align:center;">
+0.1921053
+</td>
+<td style="text-align:center;">
+28/11/1988
+</td>
+<td style="text-align:center;">
+1/07/2012
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Riyad Mahrez
+</td>
+<td style="text-align:center;">
+0.8871345
+</td>
+<td style="text-align:center;">
+21/02/1991
+</td>
+<td style="text-align:center;">
+11/01/2014
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Robert Huth
+</td>
+<td style="text-align:center;">
+0.9210526
+</td>
+<td style="text-align:center;">
+18/08/1984
+</td>
+<td style="text-align:center;">
+1/07/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Shinji Okazaki
+</td>
+<td style="text-align:center;">
+0.6005848
+</td>
+<td style="text-align:center;">
+16/04/1986
+</td>
+<td style="text-align:center;">
+1/07/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Wes Morgan
+</td>
+<td style="text-align:center;">
+1.0000000
+</td>
+<td style="text-align:center;">
+21/01/1984
+</td>
+<td style="text-align:center;">
+30/01/2012
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+Yohan Benalouane
+</td>
+<td style="text-align:center;">
+0.0198830
+</td>
+<td style="text-align:center;">
+28/03/1987
+</td>
+<td style="text-align:center;">
+3/08/2015
+</td>
+<td style="text-align:center;">
+15/05/2016
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<ul>
+<li>The <code>percent_involvement</code> column is a 0 - 1 number representing the percentage of minutes played for the season.</li>
+<li>The <code>dob</code> column is each players date of birth.</li>
+<li>The <code>arrival_at_team</code> column is the date the player joined the club.</li>
+<li>The <code>reference_date</code> column is the date that you want to calculate age and time at the club from. In this circumstance, I’ve used the date of the last Premier League game of the 2015/16 season.</li>
+</ul>
+<p>I found Leicester City’s data from 2015/16 at <a href="https://www.transfermarkt.com/">transfermarkt.com</a>.</p>
+<p>Save this file as a <code>.csv</code> in your working directory.</p>
+</div>
+<div id="find-a-logo" class="section level3">
+<h3>Find a logo</h3>
+<p>Find your team’s logo online (preferably high resolution <code>.png</code> image with a transparent background), and save it into your working directory. I found this one on <a href="https://en.wikipedia.org/wiki/Leicester_City_F.C.">Leicester City’s Wikipedia page</a>.</p>
+<div style="width:200px; height:200px">
+<p><img src="/img/leicester_logo.png" width="100" /></p>
+</div>
+<p><br></p>
+</div>
+</div>
+<div id="step-2-load-packages-and-import-data" class="section level1">
+<h1>Step 2 | Load packages and import data</h1>
+<div id="r-packages" class="section level3">
+<h3>R packages</h3>
+<p>The below packages need to be loaded at the beginning of your R script. If this is the first time using any of these packages on your computer, make sure you install them first (e.g. <code>install.packages("package_name")</code>).</p>
+<p>Using different fonts in R can be tricky, particularly on Windows machines (like I use). After installing and loading the <code>extrafont</code> package, before using it for the first time you’ll need to run <code>font_import()</code> which loads all the fonts from your computer into R. This can take a while (~ 2-5min), but only needs to be done once (unless you add new fonts later). Then you can run <code>fonts()</code> to see all the fonts available to you. From then on, you’ll only need to run <code>extrafont::loadfonts(device = "win")</code> at the start of your script (<em>note: the <code>package_name::function</code> means that I want to use this function without fully loading all that package’s functions</em>). I believe Mac users only need to run <code>extrafont::loadfonts()</code> (i.e. without <code>device = "win"</code>), but I’ll need a Mac user to confirm this with me.</p>
+<p>Later in this post I’ll be using a font called “URWGeometricW03-Light” that I had to download online, you’ll need to substitute this in the code to a font available to you for the code to work (or aquire this font and re-run <code>font_import()</code>).</p>
+<pre class="r"><code>extrafont::loadfonts(device = &quot;win&quot;)
+library(tidyverse)
+library(lubridate)
+library(ggrepel)
+library(ggforce)
+library(Cairo)
+library(magick)
+library(scales)</code></pre>
+</div>
+<div id="add-metadata" class="section level3">
+<h3>Add metadata</h3>
+<p>This is where we define what will end up being used for our title, subtitle, caption, and logo.</p>
+<pre class="r"><code># Metadata ---------------------------------------------------------------
+
+# Title, subtitle, and legend
+team_name &lt;- &quot;Leicester City&quot;
+short_name &lt;- &quot;Foxes&quot;
+league &lt;- &quot;English Premier League&quot;
+season &lt;- &quot;2015/16&quot;
+
+# Caption
+data_source &lt;- &quot;transfermarkt.com&quot;
+social_media_handle &lt;- &quot;@mitchhendo_&quot;
+
+# Name of logo file within working directory
+logo_file_name &lt;- &quot;leicester_logo.png&quot;</code></pre>
+</div>
+<div id="load-data" class="section level3">
+<h3>Load data</h3>
+<p>This section will read in the data from my file called <code>leicester_data.csv</code> in my working directory, and make it an object called <code>data</code>. Then we tell R what kind of data certain columns are (number, date, character etc), and calculate a few new columns based on the data within the file.</p>
+<p>I’ve added comments to the code so it’s easier to understand what each part is doing. Anything after a <code>#</code> is a comment which <strong>isn’t</strong> executed as code. Comments are used for explaining your code to others or yourself in the future.</p>
+<pre class="r"><code># Data import -------------------------------------------------------------
+
+data &lt;- read_csv(&#39;data_leicester.csv&#39;) %&gt;% # Read in this file
+  mutate(
+    dob = dmy(dob),
+    # Recognise this column as a date
+    
+    reference_date = dmy(reference_date),
+    # Recognise this column as a date
+    
+    arrival_at_team = dmy(arrival_at_team),
+    # Recognise this column as a date
+    
+    age = (reference_date - dob) / 365,
+    # Create a new column that calculates each players age at the reference date
+    
+    age_at_arrival = (arrival_at_team - dob) / 365,
+    # Create a new column that calculates each players age at arrival to the club
+    
+    time_with_team = as_factor(ifelse(arrival_at_team &lt; reference_date - 365, &quot;Years &gt; 1&quot;, &quot;Years &lt; 1&quot;))
+    # Create a new column that determines whether a player has been at the club for longer than a year or not
+  )</code></pre>
+<p><br></p>
+</div>
+</div>
+<div id="step-3-create-plot" class="section level1">
+<h1>Step 3 | Create plot</h1>
+<div id="prep" class="section level3">
+<h3>Prep</h3>
+<p>Before we create the <code>ggplot</code> object, we need to define a few things to make the plotting easier.</p>
+<p>Firstly, we define what colours we want for the dots and call this object <code>year_colours</code> (using hex code to specify colours), and also define a series of numbers that we’ll call <code>index</code> which will allow us to plot the trailing lines behind the players (showing how long they’ve been at the club for).</p>
+<pre class="r"><code># Colours of the dots
+year_colours &lt;- c(`Years &gt; 1` = &quot;#25ABF8&quot;, `Years &lt; 1` = &quot;#CE3A6C&quot;)
+
+# This vector is needed to draw the trailing lines showing how long a player has been at the club
+# Don&#39;t change this unless you know what you&#39;re doing
+index &lt;- c(0, 0.25, 0.5, 0.75, 1)</code></pre>
+</div>
+<div id="plotting" class="section level3">
+<h3>Plotting</h3>
+<p>Now the fun begins. Let’s start building the plot.</p>
+<p>We’ll start by using the <code>ggplot</code> function and telling it that the data we’re using is from the <code>data</code> object we created earlier. The <code>aes()</code> function is used to specify what parts of our data are going to be used in the plot, so we say the x-axis will be our <code>age</code> column and the y-axis will be our <code>percent_involvement</code> column.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot1-1.png" width="696" /></p>
+<p>This is essentially the canvas that we’ll build from.</p>
+<p>Next we’ll add our dots using the <code>geom_point()</code> function. The way the <code>ggplot</code> function works is by adding layers (called geoms) to the “canvas”. We add layers or aspects to the plot by adding them with a <code>+</code>.</p>
+<p>Note I’ve added another column from our dataset to specify the colour in the <code>aes()</code> function for the <code>geom_point()</code> layer <strong>only</strong>. The data specified in the <code>aes()</code> function at the top is applied to <strong>all</strong> geoms below unless specified otherwise within the an individual geom. I’ve also manually adjusted the size of the dots, which is done outside the <code>aes()</code>.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4)</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot2-1.png" width="696" /></p>
+<p>Next we’ll add our title, subtitle, x-axis title, caption, and legend title using the <code>labs()</code> function. All of the information for these has been defined in <strong>Step 2</strong> where we added the metadata.</p>
+<p>The <code>paste0()</code> function essentially allows us to paste together objects we’ve defined using code and written character strings to create a character string that dynamically changes based on different inputs (e.g. <code>paste0(team_name, " | Squad Age Profile")</code> becomes “Leicester City | Squad Age Profile”). You can use the dynamic titles like I have, or you could simply write what you want each part to say within quotation marks like I did for the x-axis title.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot3-1.png" width="696" /></p>
+<p>Next we’ll fix up our y-axis by using the <code>scale_y_continuous()</code> function to give it a proper title, use percent scales, and tell it where to break up the axis ticks.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot4-1.png" width="696" /></p>
+<p>Then we set our axis limits using the <code>expand_limits()</code>, and x-axis breaks using <code>scale_x_continuous()</code>.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_x_continuous(breaks = seq(16, 40, 4))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot5-1.png" width="696" /></p>
+<p>We can add our colours to the dots that we specified earlier by using <code>scale_colour_manual()</code> and specifying the values to be our object <code>year_colours</code>.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours)</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot6-1.png" width="696" /></p>
+<p>One of the most fun parts of using <code>ggplot</code> in my mind is playing around with the theme. There are a number of <a href="https://www.datanovia.com/en/blog/ggplot-themes-gallery/">basic themes built into ggplot</a> aswell as some more fun ones that can be added with packages like <a href="https://github.com/hrbrmstr/hrbrthemes">hrbrthemes</a>, <a href="https://github.com/ricardo-bion/ggtech">ggtech</a> (which has themes to imitate <em>AirBnb</em>, <em>Facebook</em>, <em>Google</em> and <em>Twitter</em>’s style), and <a href="https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/">ggthemes</a> (which has themes to imitate plots made by <em>FiveThirtyEight</em>, <em>Wall Street Journal</em>, and <em>The Economist</em> among others). The best page I’ve found for exploring different themes and theme packages is <a href="https://rfortherestofus.com/2019/08/themes-to-improve-your-ggplot-figures/"><em>Themes to improve your ggplot figures</em> by rfortherestofus.com</a>. You can also modify themes any way you’d like using the <code>theme()</code> function which we’ll get to next.</p>
+<p>I’ll use <code>theme_minimal()</code> as a base.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal()</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot7-1.png" width="696" /></p>
+<p>You can adjust any aspect of the theme manually with <code>theme()</code>. The flexibility and power of this is almost endless, and far beyond the scope of this post, but carefully look through all the arguments I’ve written and you’ll be able to understand a lot of it.</p>
+<p>Remember that you will likely need to change the font (the <code>family</code> argument within <code>theme()</code>) where mine says <code>URWGeometricW03-Light</code> to a font available to you (check your available fonts with <code>extrafont::fonts()</code>).</p>
+<p>Feel free to play around with these to get a different look or to get a better understanding of what they’re doing. For example, you could change the colour of the plot area (i.e. where the data goes) by changing the hex code in <code>plot.background = element_rect(fill = "#141622")</code>.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal() +
+  theme(legend.position = &quot;right&quot;, 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = &quot;#141622&quot;),
+        panel.background = element_rect(fill = &quot;#141622&quot;, 
+                                        colour = &quot;#141622&quot;,
+                                        size = 2, 
+                                        linetype = &quot;solid&quot;),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = &#39;solid&#39;,
+                                        colour = &quot;gray30&quot;),
+        axis.title.x = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.title.y = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.text.x = element_text(colour = &quot;white&quot;),
+        axis.text.y = element_text(colour = &quot;white&quot;),
+        plot.title = element_text(face = &quot;bold&quot;, 
+                                  colour = &quot;white&quot;, 
+                                  size = 14, 
+                                  family = &quot;Century Gothic&quot;),
+        plot.subtitle = element_text(colour = &quot;white&quot;, 
+                                     family = &quot;URWGeometricW03-Light&quot;, 
+                                     size = 10),
+        plot.caption = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 10),
+        plot.caption.position = &quot;plot&quot;,
+        legend.title = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 14),
+        legend.text = element_text(colour = &quot;white&quot;, 
+                                   family = &quot;URWGeometricW03-Light&quot;, 
+                                   size = 14))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot8-1.png" width="696" /></p>
+<p>Next we add the player name labels to the plot using <code>geom_text_repel()</code> from the <code>ggrepel</code> package we loaded earlier. It’s a handy function that basically ensures labels don’t overlap each other.</p>
+<p>The order in which we add things from here starts to matter now. Like I mentioned earlier, becuase <code>ggplot</code>’s are built with layers, you need to think about what order you want them laid. I want the labels to be added on top of the dots, so I’ll put this geom right after <code>geom_point()</code>.</p>
+<p>Again, in my code below, this geom uses the “URWGeometricW03-Light” font I got online. You’ll need to change this to one of your fonts.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  geom_text_repel(aes(label = player_name), 
+                  size = 3.5, 
+                  colour = &quot;white&quot;, 
+                  family = &quot;URWGeometricW03-Light&quot;) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal() +
+  theme(legend.position = &quot;right&quot;, 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = &quot;#141622&quot;),
+        panel.background = element_rect(fill = &quot;#141622&quot;, 
+                                        colour = &quot;#141622&quot;,
+                                        size = 2, 
+                                        linetype = &quot;solid&quot;),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = &#39;solid&#39;,
+                                        colour = &quot;gray30&quot;),
+        axis.title.x = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.title.y = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.text.x = element_text(colour = &quot;white&quot;),
+        axis.text.y = element_text(colour = &quot;white&quot;),
+        plot.title = element_text(face = &quot;bold&quot;, 
+                                  colour = &quot;white&quot;, 
+                                  size = 14, 
+                                  family = &quot;Century Gothic&quot;),
+        plot.subtitle = element_text(colour = &quot;white&quot;, 
+                                     family = &quot;URWGeometricW03-Light&quot;, 
+                                     size = 10),
+        plot.caption = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 10),
+        plot.caption.position = &quot;plot&quot;,
+        legend.title = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 14),
+        legend.text = element_text(colour = &quot;white&quot;, 
+                                   family = &quot;URWGeometricW03-Light&quot;, 
+                                   size = 14))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot9-1.png" width="696" /></p>
+<p>The plot is really starting to look like the finished product now.</p>
+<p>We need to add the trailing white lines with the <code>geom_link()</code> function from the <code>ggforce</code> package we’ve loaded. Again, the order is important here, we want the lines to be beneath the dots so we add this geom <strong>before</strong> <code>geom_point()</code>.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  geom_link(aes(x = age_at_arrival,
+                xend = age,
+                yend = percent_involvement,
+                alpha = stat(index)), 
+            colour = &quot;white&quot;, 
+            lineend = &quot;round&quot;,
+            show.legend = F) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  geom_text_repel(aes(label = player_name), 
+                  size = 3.5, 
+                  colour = &quot;white&quot;, 
+                  family = &quot;URWGeometricW03-Light&quot;) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal() +
+  theme(legend.position = &quot;right&quot;, 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = &quot;#141622&quot;),
+        panel.background = element_rect(fill = &quot;#141622&quot;, 
+                                        colour = &quot;#141622&quot;,
+                                        size = 2, 
+                                        linetype = &quot;solid&quot;),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = &#39;solid&#39;,
+                                        colour = &quot;gray30&quot;),
+        axis.title.x = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.title.y = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.text.x = element_text(colour = &quot;white&quot;),
+        axis.text.y = element_text(colour = &quot;white&quot;),
+        plot.title = element_text(face = &quot;bold&quot;, 
+                                  colour = &quot;white&quot;, 
+                                  size = 14, 
+                                  family = &quot;Century Gothic&quot;),
+        plot.subtitle = element_text(colour = &quot;white&quot;, 
+                                     family = &quot;URWGeometricW03-Light&quot;, 
+                                     size = 10),
+        plot.caption = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 10),
+        plot.caption.position = &quot;plot&quot;,
+        legend.title = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 14),
+        legend.text = element_text(colour = &quot;white&quot;, 
+                                   family = &quot;URWGeometricW03-Light&quot;, 
+                                   size = 14))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot10-1.png" width="696" /></p>
+<p>Now we need to add the green <em>Peak Years</em> area and label. This is done with <code>annotate()</code> which manually adds things like shapes, text, or images. We’re adding a shape (<code>rect</code> for rectangle) and text, so we add 2 <code>annotate()</code> geoms before anything else (because we want them to be at the deepest layer), and provide it the coordinates so it knows where to put them.</p>
+<p>Once again, change <code>family</code> if you don’t have the “URWGeometricW03-Light” font.</p>
+<pre class="r"><code>ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  annotate(&quot;rect&quot;, 
+           xmin = 24,
+           xmax = 29,
+           ymin = -Inf,
+           ymax = 1,
+           alpha = 0.5,
+           fill = &quot;mediumseagreen&quot;) +
+  annotate(&quot;text&quot;, 
+           x = 26.5, 
+           y = 1.05, 
+           label = &quot;Peak Years&quot;, 
+           colour = &quot;mediumseagreen&quot;, 
+           alpha = 0.7, 
+           family = &quot;URWGeometricW03-Light&quot;,
+           size = 5) +
+  geom_link(aes(x = age_at_arrival,
+                xend = age,
+                yend = percent_involvement,
+                alpha = stat(index)), 
+            colour = &quot;white&quot;, 
+            lineend = &quot;round&quot;,
+            show.legend = F) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  geom_text_repel(aes(label = player_name), 
+                  size = 3.5, 
+                  colour = &quot;white&quot;, 
+                  family = &quot;URWGeometricW03-Light&quot;) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal() +
+  theme(legend.position = &quot;right&quot;, 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = &quot;#141622&quot;),
+        panel.background = element_rect(fill = &quot;#141622&quot;, 
+                                        colour = &quot;#141622&quot;,
+                                        size = 2, 
+                                        linetype = &quot;solid&quot;),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = &#39;solid&#39;,
+                                        colour = &quot;gray30&quot;),
+        axis.title.x = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.title.y = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.text.x = element_text(colour = &quot;white&quot;),
+        axis.text.y = element_text(colour = &quot;white&quot;),
+        plot.title = element_text(face = &quot;bold&quot;, 
+                                  colour = &quot;white&quot;, 
+                                  size = 14, 
+                                  family = &quot;Century Gothic&quot;),
+        plot.subtitle = element_text(colour = &quot;white&quot;, 
+                                     family = &quot;URWGeometricW03-Light&quot;, 
+                                     size = 10),
+        plot.caption = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 10),
+        plot.caption.position = &quot;plot&quot;,
+        legend.title = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 14),
+        legend.text = element_text(colour = &quot;white&quot;, 
+                                   family = &quot;URWGeometricW03-Light&quot;, 
+                                   size = 14))</code></pre>
+<p><img src="/post/2020-04-22-how-a-sports-scientist-can-use-ggplot2-to-make-a-stunning-dataviz_files/figure-html/plot11-1.png" width="696" /></p>
+<p><br></p>
+</div>
+</div>
+<div id="step-4-saving-and-adding-the-logo" class="section level1">
+<h1>Step 4 | Saving and adding the logo</h1>
+<div id="saving-the-plot" class="section level3">
+<h3>Saving the plot</h3>
+<p>To save the plot as a high resolution image we can use the <code>ggsave()</code> function. Here I save the file with a dynamic name that equates to the current date, underscore, short_name (object we created in Step 2 = “Foxes”), underscore, peak-years.png. So for me, today as I write this post, the file would be saved as <code>2020-04-24_Foxes_peak-years.png</code>, but that would be different if I was to save it on a different day or with a different <code>short_name</code> object.</p>
+<p>The <code>dpi</code> argument is <em>dots per inch</em> and allows you to set the resolution. Higher is better but also means a larger file size (<code>dpi = 600</code> is good).</p>
+<p>The file will be saved into your working directory.</p>
+<pre class="r"><code>ggsave(paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;), 
+       height = 5.75,
+       width = 7.25,
+       dpi = 600,
+       type = &quot;cairo&quot;)</code></pre>
+</div>
+<div id="adding-the-logo" class="section level3">
+<h3>Adding the logo</h3>
+<p>There’s a number of ways to add a logo to a <code>ggplot</code> object, but they can be quite complex. The best one I’ve found is using a custom function that <a href="https://twitter.com/thomas_mock">Thomas Mock</a> created and posted on <a href="https://themockup.netlify.app/posts/2019-01-09-add-a-logo-to-your-plot/">his blog</a>.</p>
+<p>It reads in the plot as a <code>.png</code> image, the logo as another <code>.png</code> image, and puts the logo in a corner you specify at a size you specify.</p>
+<p>The only parts of this you <strong>may</strong> want to modify are the sections below <code>### ONLY MODIFY FROM HERE DOWN</code>. You can choose which corner you want the logo in, what is the file name you saved the plot image, and the size of the logo (bigger number = smaller logo).</p>
+<pre class="r"><code># Add logo function -------------------------------------------------------
+
+add_logo &lt;- function(plot_path, logo_path, logo_position, logo_scale = 10){
+  
+  # Requires magick R Package https://github.com/ropensci/magick
+  
+  # Useful error message for logo position
+  if (!logo_position %in% c(&quot;top right&quot;, &quot;top left&quot;, &quot;bottom right&quot;, &quot;bottom left&quot;)) {
+    stop(&quot;Error Message: Uh oh! Logo Position not recognized\n  Try: logo_positon = &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39;, or &#39;bottom right&#39;&quot;)
+  }
+  
+  # read in raw images
+  plot &lt;- magick::image_read(plot_path)
+  logo_raw &lt;- magick::image_read(logo_path)
+  
+  # get dimensions of plot for scaling
+  plot_height &lt;- magick::image_info(plot)$height
+  plot_width &lt;- magick::image_info(plot)$width
+  
+  # default scale to 1/10th width of plot
+  # Can change with logo_scale
+  logo &lt;- magick::image_scale(logo_raw, as.character(plot_width/logo_scale))
+  
+  # Get width of logo
+  logo_width &lt;- magick::image_info(logo)$width
+  logo_height &lt;- magick::image_info(logo)$height
+  
+  # Set position of logo
+  # Position starts at 0,0 at top left
+  # Using 0.01 for 1% - aesthetic padding
+  
+  if (logo_position == &quot;top right&quot;) {
+    x_pos = plot_width - logo_width - 0.02 * plot_width
+    y_pos = 0.01 * plot_height
+  } else if (logo_position == &quot;top left&quot;) {
+    x_pos = 0.01 * plot_width
+    y_pos = 0.01 * plot_height
+  } else if (logo_position == &quot;bottom right&quot;) {
+    x_pos = plot_width - logo_width - 0.02 * plot_width
+    y_pos = plot_height - logo_height - 0.02 * plot_height
+  } else if (logo_position == &quot;bottom left&quot;) {
+    x_pos = 0.01 * plot_width
+    y_pos = plot_height - logo_height - 0.02 * plot_height
+  }
+  
+  # Compose the actual overlay
+  magick::image_composite(plot, logo, offset = paste0(&quot;+&quot;, x_pos, &quot;+&quot;, y_pos))
+  
+}
+
+
+### ONLY MODIFY FROM HERE DOWN
+
+# Choose logo, position, and size (bigger number = smaller logo) ----------
+
+plot_with_logo &lt;- add_logo(
+  plot_path = paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;), # url or local file for the plot
+  logo_path = logo_file_name, # url or local file for the logo
+  logo_position = &quot;top right&quot;, # choose a corner
+  # &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39; or &#39;bottom right&#39;
+  logo_scale = 7
+)
+
+# save the image and write to working directory
+magick::image_write(plot_with_logo, paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;))</code></pre>
+<p>This’ll save over the file we created with a new file that’s the plot image with the logo added like this:</p>
+<p><img src="/img/foxes_peak-years.png" /></p>
+<p>And that’s it! Let me know if you have any questions or want me to clarify anything.</p>
+<p><strong>Keep up to date with anything new from me on <a href="https://twitter.com/mitchhendo_">my Twitter</a>.</strong></p>
+<p>Cheers,</p>
+<p>Mitch</p>
+<p><em>Cover image and thumbnail from <a href="www.rstudio.com">RStudio.com</a>.</em></p>
+<p><strong>Full code:</strong></p>
+<pre class="r"><code>extrafont::loadfonts(device = &quot;win&quot;)
+library(tidyverse)
+library(lubridate)
+library(ggrepel)
+library(ggforce)
+library(Cairo)
+library(magick)
+library(scales)
+
+
+# Metadata ---------------------------------------------------------------
+
+# Title, subtitle, and legend
+team_name &lt;- &quot;Leicester City&quot;
+short_name &lt;- &quot;Foxes&quot;
+league &lt;- &quot;English Premier League&quot;
+season &lt;- &quot;2015/16&quot;
+
+# Caption
+data_source &lt;- &quot;transfermarkt.com&quot;
+social_media_handle &lt;- &quot;@mitchhendo_&quot;
+
+# Name of logo file within working directory
+logo_file_name &lt;- &quot;leicester_logo.png&quot;
+
+
+
+# Data import -------------------------------------------------------------
+
+data &lt;- read_csv(&#39;data_leicester.csv&#39;) %&gt;% # Read in this file
+  mutate(
+    dob = dmy(dob),
+    # Recognise this column as a date
+    
+    reference_date = dmy(reference_date),
+    # Recognise this column as a date
+    
+    arrival_at_team = dmy(arrival_at_team),
+    # Recognise this column as a date
+    
+    age = (reference_date - dob) / 365,
+    # Create a new column that calculates each players age at the reference date
+    
+    age_at_arrival = (arrival_at_team - dob) / 365,
+    # Create a new column that calculates each players age at arrival to the club
+    
+    time_with_team = as_factor(ifelse(arrival_at_team &lt; reference_date - 365, &quot;Years &gt; 1&quot;, &quot;Years &lt; 1&quot;))
+    # Create a new column that determines whether a player has been at the club for longer than a year or not
+  )
+
+
+# Visualise ---------------------------------------------------------------
+
+# Colours of the dots
+year_colours &lt;- c(`Years &gt; 1` = &quot;#25ABF8&quot;, `Years &lt; 1` = &quot;#CE3A6C&quot;)
+
+# This vector is needed to draw the trailing lines showing how long a player has been at the club
+# Don&#39;t change this unless you know what you&#39;re doing
+index &lt;- c(0, 0.25, 0.5, 0.75, 1)
+
+
+# Construct plot
+ggplot(data = data, aes(x = age, y = percent_involvement)) +
+  annotate(&quot;rect&quot;, xmin = 24, xmax = 29, ymin = -Inf, ymax = 1, alpha = 0.5, fill = &quot;mediumseagreen&quot;) +
+  annotate(&quot;text&quot;, 
+           x = 26.5, 
+           y = 1.05, 
+           label = &quot;Peak Years&quot;, 
+           colour = &quot;mediumseagreen&quot;, 
+           alpha = 0.7, 
+           family = &quot;URWGeometricW03-Light&quot;,
+           size = 5) +
+  geom_link(aes(x = age_at_arrival, xend = age, yend = percent_involvement, alpha = stat(index)), 
+            colour = &quot;white&quot;, 
+            lineend = &quot;round&quot;,
+            show.legend = F) +
+  geom_point(aes(colour = time_with_team), size = 4) +
+  geom_text_repel(aes(label = player_name), 
+                  size = 3.5, 
+                  colour = &quot;white&quot;, 
+                  family = &quot;URWGeometricW03-Light&quot;) +
+  labs(x = &quot;Age&quot;,
+       title = paste0(team_name, &quot; | Squad Age Profile&quot;), 
+       subtitle = paste0(league, &quot; | Season &quot;, season),
+       caption = paste0(social_media_handle, &quot; | Data: &quot;, data_source),
+       colour = paste0(&quot;Time at &quot;, short_name)) +
+  scale_y_continuous(&quot;Share of minutes played&quot;, 
+                     labels = scales::percent_format(accuracy = 1), 
+                     breaks = c(0, 0.2, 0.4, 0.6, 0.8, 1)) +
+  expand_limits(x = c(16, 40), y = c(0, 1)) +
+  scale_x_continuous(breaks = seq(16, 40, 4)) +
+  scale_colour_manual(values = year_colours) +
+  theme_minimal() +
+  theme(legend.position = &quot;right&quot;, 
+        panel.grid.minor = element_blank(),
+        plot.background = element_rect(fill = &quot;#141622&quot;),
+        panel.background = element_rect(fill = &quot;#141622&quot;, 
+                                        colour = &quot;#141622&quot;,
+                                        size = 2, 
+                                        linetype = &quot;solid&quot;),
+        panel.grid.major = element_line(size = 0.5, 
+                                        linetype = &#39;solid&#39;,
+                                        colour = &quot;gray30&quot;),
+        axis.title.x = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.title.y = element_text(size = 13, 
+                                    face = &quot;bold&quot;, 
+                                    colour = &quot;white&quot;, 
+                                    family = &quot;Century Gothic&quot;),
+        axis.text.x = element_text(colour = &quot;white&quot;),
+        axis.text.y = element_text(colour = &quot;white&quot;),
+        plot.title = element_text(face = &quot;bold&quot;, 
+                                  colour = &quot;white&quot;, 
+                                  size = 14, 
+                                  family = &quot;Century Gothic&quot;),
+        plot.subtitle = element_text(colour = &quot;white&quot;, 
+                                     family = &quot;URWGeometricW03-Light&quot;, 
+                                     size = 10),
+        plot.caption = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 10),
+        plot.caption.position = &quot;plot&quot;,
+        legend.title = element_text(colour = &quot;white&quot;, 
+                                    family = &quot;URWGeometricW03-Light&quot;, 
+                                    size = 14),
+        legend.text = element_text(colour = &quot;white&quot;, 
+                                   family = &quot;URWGeometricW03-Light&quot;, 
+                                   size = 14)) +
+  ggsave(paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;),  dpi = 600, type = &quot;cairo&quot;)
+
+
+
+
+
+# Add logo function -------------------------------------------------------
+
+add_logo &lt;- function(plot_path, logo_path, logo_position, logo_scale = 10){
+  
+  # Requires magick R Package https://github.com/ropensci/magick
+  
+  # Useful error message for logo position
+  if (!logo_position %in% c(&quot;top right&quot;, &quot;top left&quot;, &quot;bottom right&quot;, &quot;bottom left&quot;)) {
+    stop(&quot;Error Message: Uh oh! Logo Position not recognized\n  Try: logo_positon = &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39;, or &#39;bottom right&#39;&quot;)
+  }
+  
+  # read in raw images
+  plot &lt;- magick::image_read(plot_path)
+  logo_raw &lt;- magick::image_read(logo_path)
+  
+  # get dimensions of plot for scaling
+  plot_height &lt;- magick::image_info(plot)$height
+  plot_width &lt;- magick::image_info(plot)$width
+  
+  # default scale to 1/10th width of plot
+  # Can change with logo_scale
+  logo &lt;- magick::image_scale(logo_raw, as.character(plot_width/logo_scale))
+  
+  # Get width of logo
+  logo_width &lt;- magick::image_info(logo)$width
+  logo_height &lt;- magick::image_info(logo)$height
+  
+  # Set position of logo
+  # Position starts at 0,0 at top left
+  # Using 0.01 for 1% - aesthetic padding
+  
+  if (logo_position == &quot;top right&quot;) {
+    x_pos = plot_width - logo_width - 0.02 * plot_width
+    y_pos = 0.01 * plot_height
+  } else if (logo_position == &quot;top left&quot;) {
+    x_pos = 0.01 * plot_width
+    y_pos = 0.01 * plot_height
+  } else if (logo_position == &quot;bottom right&quot;) {
+    x_pos = plot_width - logo_width - 0.01 * plot_width
+    y_pos = plot_height - logo_height - 0.01 * plot_height
+  } else if (logo_position == &quot;bottom left&quot;) {
+    x_pos = 0.01 * plot_width
+    y_pos = plot_height - logo_height - 0.01 * plot_height
+  }
+  
+  # Compose the actual overlay
+  magick::image_composite(plot, logo, offset = paste0(&quot;+&quot;, x_pos, &quot;+&quot;, y_pos))
+  
+}
+
+
+
+# Choose logo, position, and size (bigger number = smaller logo) ----------
+
+plot_with_logo &lt;- add_logo(
+  plot_path = paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;), # url or local file for the plot
+  logo_path = logo_file_name, # url or local file for the logo
+  logo_position = &quot;top right&quot;, # choose a corner
+  # &#39;top left&#39;, &#39;top right&#39;, &#39;bottom left&#39; or &#39;bottom right&#39;
+  logo_scale = 7
+)
+
+# save the image and write to working directory
+magick::image_write(plot_with_logo, paste0(Sys.Date(), &quot;_&quot;, short_name, &quot;_peak-years.png&quot;)) </code></pre>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="/tags/dataviz/">dataviz</a>
+
+  <a class="tag tag--primary tag--small" href="/tags/r/">R</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-to-tidy-catapult-10hz-export-data/" data-tooltip="How to tidy Catapult 10Hz export data">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Mitch Henderson. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-to-tidy-catapult-10hz-export-data/" data-tooltip="How to tidy Catapult 10Hz export data">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2020%2F04%2Fhow-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Mitch Henderson</h4>
+    
+      <div id="about-card-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Australian Mens 7s<!-- raw HTML omitted -->Rugby Australia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sydney, Australia
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/img/black.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2020\/04\/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations\/';
+          
+            this.page.identifier = '\/2020\/04\/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'mitchhenderson-org';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+
