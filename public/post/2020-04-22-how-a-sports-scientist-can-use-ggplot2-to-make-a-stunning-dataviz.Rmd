@@ -16,10 +16,10 @@ coverMeta: out
 metaAlignment: center
 thumbnailImage: /img/ggplot2.png
 thumbnailImagePosition: left
+description: test
 ---
 
 Great visualisations help communicate your message more clearly. This post shows you an example of my process.
-
 
 <!--more-->
 
