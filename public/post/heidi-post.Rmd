@@ -1,5 +1,5 @@
 ---
-title: "Visualising data measured from activity watches | Guest post by Heidi Thornton"
+title: "Visualising Apple Health data | Guest post by Heidi Thornton"
 author: "Heidi Thornton"
 date: '2020-05-19'
 coverMeta: out
@@ -37,7 +37,7 @@ You can find presentation slides covering all content and the full code at the e
 
 <br>
 
-# Accessing Apple Health Data
+# Accessing Apple Health data
 
 ![](/img/Steps.png)
 
