@@ -33,7 +33,7 @@ In this post I'll run through how to:
 - run some some basic analysis
 - manipulate and visualise the data using `dplyr` & `ggplot`
 
-Full code is available at the end of the post.
+You can find presentation slides covering all content and the full code at the end of the post.
 
 <br>
 
@@ -377,6 +377,15 @@ For more information on analysing Apple Health data, check out:
 
 # Thanks for looking! `r emo::ji("blush")`
 
+The presentation slides for this post can be viewed [full screen](https://mitchhenderson.github.io/heidi-slides/Heidi-Presentation-Xaringan--2-.html) or embedded below.
+
+<br>
+
+```{r echo=FALSE}
+knitr::include_url('https://mitchhenderson.github.io/heidi-slides/Heidi-Presentation-Xaringan--2-.html')
+```
+
+<br>
 
 If you want to learn more about R, there is some awesome work out there from fellow Aussies!
 
