@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.68.3 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Mitch Henderson">
+<meta name="keywords" content="">
+<meta name="description" content="background-image: url(“Images/Watch.png”)background-size: 30%background-position: 50% 95%
+Alternative Tracking Method#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!As a guide to measure the training completed during this period is via activity watchesWhilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etcHere, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using ggplot">
+
+
+<meta property="og:description" content="background-image: url(“Images/Watch.png”)background-size: 30%background-position: 50% 95%
+Alternative Tracking Method#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!As a guide to measure the training completed during this period is via activity watchesWhilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etcHere, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using ggplot">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Accessing Apple Health Data">
+<meta name="twitter:title" content="Accessing Apple Health Data">
+<meta property="og:url" content="/1/01/accessing-apple-health-data/">
+<meta property="twitter:url" content="/1/01/accessing-apple-health-data/">
+<meta property="og:site_name" content="mitchhenderson.org">
+<meta property="og:description" content="background-image: url(“Images/Watch.png”)background-size: 30%background-position: 50% 95%
+Alternative Tracking Method#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!As a guide to measure the training completed during this period is via activity watchesWhilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etcHere, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using ggplot">
+<meta name="twitter:description" content="background-image: url(“Images/Watch.png”)background-size: 30%background-position: 50% 95%
+Alternative Tracking Method#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!As a guide to measure the training completed during this period is via activity watchesWhilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etcHere, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using ggplot">
+<meta property="og:locale" content="en-us">
+
+  
+  
+  
+  
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@mitchhendo_">
+
+
+  <meta name="twitter:creator" content="@mitchhendo_">
+
+
+
+
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+
+
+    <title>Accessing Apple Health Data</title>
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="/1/01/accessing-apple-health-data/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-154979770-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">mitchhenderson.org</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Mitch Henderson</h4>
+        
+          <h5 class="sidebar-profile-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-user"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="mailto:mail@mitchhenderson.org" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-envelope"></i>
+      
+      <span class="sidebar-button-desc">Email</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-youtube"></i>
+      
+      <span class="sidebar-button-desc">YouTube</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/mitchhenderson">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="5"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Accessing Apple Health Data
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="0001-01-01T00:00:00Z">
+        
+  January 1, 1
+
+      </time>
+    
+    
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+<link href="/rmarkdown-libs/font-awesome/css/fontawesome-all.min.css" rel="stylesheet" />
+
+
+<p>background-image: url(“Images/Watch.png”)
+background-size: 30%
+background-position: 50% 95%</p>
+<div id="alternative-tracking-method" class="section level1">
+<h1>Alternative Tracking Method</h1>
+<div id="as-sports-scientists-during-this-covid-19-shut-we-have-limmited-ways-of-determining-adherance-or-completion-of-training-programs-which-of-course-are-completed-within-govenment-guidelines" class="section level2">
+<h2>#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!</h2>
+</div>
+<div id="as-a-guide-to-measure-the-training-completed-during-this-period-is-via-activity-watches" class="section level2">
+<h2>As a <strong>guide</strong> to measure the training completed during this period is via activity watches</h2>
+</div>
+<div id="whilst-the-reliability-and-validity-of-activity-watches-is-not-widely-available-these-measure-basic-metrics-such-as-total-distance-duration-hr-energy-burnt-etc" class="section level2">
+<h2>Whilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etc</h2>
+<p>Here, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using <strong><em>ggplot</em></strong></p>
+<hr />
+<p>background-image: url(“Images/Steps.png”)
+background-size: 60%
+background-position: 50% 95%</p>
+</div>
+</div>
+<div id="accessing-apple-health-data" class="section level1">
+<h1>Accessing Apple Health Data</h1>
+<div id="step-1---click-on-apple-health-app-on-your-phone-on-summary-page-in-the-top-right-click-on-circle-with-first-name-letter-figure-on-left" class="section level2">
+<h2><strong>Step 1</strong> - Click on apple health app on your phone, on summary page in the top right, click on circle with first name letter (figure on left)</h2>
+</div>
+<div id="step-2---slide-down-to-export-all-health-data-middle-figure" class="section level2">
+<h2><strong>Step 2</strong> - Slide down to ‘Export All Health Data’ (middle figure)</h2>
+<p><strong>Step 3</strong> - This export will take up to a few minutes, then a page to email/message etc it will pop up. Simply email to yourself and download it</p>
+<hr />
+<p>background-image: url(“Images/Heart.png”)
+background-size: 15%
+background-position: 95% 3%</p>
+</div>
+</div>
+<div id="opening-apple-health-data" class="section level1">
+<h1>Opening Apple Health Data</h1>
+<div id="you-can-open-the-zip-folder-directly-using-r-however-for-this-project-i-will-extract-the-file-that-is-within-the-folderapple_health_export." class="section level2">
+<h2>You can open the zip folder directly using R, however for this project I will extract the file that is within the folder’apple_health_export’.</h2>
+</div>
+<div id="inside-the-apple_health_export-folder-there-will-be-2-files.-for-the-purpose-of-this-you-will-only-need-the-export-file" class="section level2">
+<h2>Inside the ‘apple_health_export’ folder, there will be 2 files. For the purpose of this, you will only need the ‘export’ file</h2>
+<p>I have made a new folder that houses all files where I will set my working directly to this location and load packages. If you don’t have these packages installed use install.packages(“packagename”)</p>
+<pre class="r"><code># setwd(&quot;C:/Users/Heidi.Thornton/Desktop/Apple&quot;)</code></pre>
+<pre class="r"><code># install.packages(&quot;devtools&quot;)
+# devtools::install_github(&quot;ropenscilabs/icon&quot;)
+# devtools::install_github(&quot;hadley/emo&quot;)
+library(&quot;XML&quot;)
+library(&quot;methods&quot;)
+library(&quot;tidyverse&quot;)
+library(&quot;lubridate&quot;)</code></pre>
+<hr />
+<p>background-image: url(“Images/R.png”)
+background-size: 20%
+background-position: 50% 90%</p>
+</div>
+</div>
+<div id="why-do-this-in-r" class="section level1">
+<h1>Why do this in R?</h1>
+<div id="r-is-reproducible---microsoft-excel-is-not" class="section level2">
+<h2>###R is reproducible - microsoft excel is not…</h2>
+</div>
+<div id="we-could-simply-export-the-raw-data-into-excel-and-manipulate-and-visualise-it-there" class="section level2">
+<h2>####We could simply export the raw data into excel and manipulate and visualise it there</h2>
+</div>
+<div id="butr-isnt-that-difficult-and-there-are-lots-of-resources-out-there-to-help-learn-it" class="section level2">
+<h2>####But…R isn’t that difficult and there are lots of resources out there to help learn it</h2>
+<div id="have-the-end-game-in-mind" class="section level3">
+<h3>Have the <strong>end game</strong> in mind</h3>
+<hr />
+</div>
+</div>
+</div>
+<div id="import-the-data-into-r" class="section level1">
+<h1>Import the Data into R</h1>
+<div id="the-file-format-xml-extensible-markup-language-is-quite-easy-to-work-with-in-r-using-the-xml-package" class="section level2">
+<h2>The file format (XML; Extensible Markup Language) is quite easy to work with in R using the <strong>XML</strong> package</h2>
+</div>
+<div id="i-have-created-a-folder-where-i-have-put-my-xml-file.-if-you-have-multiple-files-you-can-use-a-loop-to-access-them-all---i-will-only-use-one-file-though" class="section level2">
+<h2>I have created a folder where I have put my xml file. If you have multiple files you can use a loop to access them all - I will only use one file though</h2>
+</div>
+<div id="first-we-need-to-make-an-xml-object-and-view-its-contents-using-summaryxml" class="section level2">
+<h2>First, we need to make an xml object and view it’s contents using summary(xml)</h2>
+<pre class="r"><code>xml &lt;- xmlParse(paste(&quot;heidi-thornton_apple-data.xml&quot;))
+summary(xml)</code></pre>
+<pre><code>## $nameCounts
+## 
+##        Record       Workout MetadataEntry    ExportDate    HealthData 
+##        200264           202            70             1             1 
+##            Me 
+##             1 
+## 
+## $numNodes
+## [1] 200539</code></pre>
+<hr />
+</div>
+</div>
+<div id="view-the-data" class="section level1">
+<h1>View the Data</h1>
+<div id="im-interested-in-the-workout-data-which-we-can-open-using-xmlattrstodataframe" class="section level2">
+<h2>I’m interested in the workout data which we can open using <strong>xmlAttrsToDataFrame</strong></h2>
+<pre class="r"><code>df_workout &lt;-  XML:::xmlAttrsToDataFrame(xml[&quot;//Workout&quot;])[c(1:2,4,6,12)]
+head(df_workout, n = 5) # View the data</code></pre>
+<pre><code>##            workoutActivityType          duration    totalDistance
+## 1 HKWorkoutActivityTypeRunning 42.44751790364583 8.01347998046875
+## 2 HKWorkoutActivityTypeCycling 45.69051513671875    11.1736796875
+## 3   HKWorkoutActivityTypeOther 45.29886474609375 3.60589990234375
+## 4   HKWorkoutActivityTypeOther 58.97060139973959  1.7677099609375
+## 5 HKWorkoutActivityTypeRunning 39.55806477864584 4.17927978515625
+##   totalEnergyBurned                   endDate
+## 1          2041.792 2019-11-23 06:40:35 +1000
+## 2          1096.208 2019-11-24 06:56:26 +1000
+## 3             836.8 2019-11-24 15:27:41 +1000
+## 4           736.384 2019-11-25 05:27:23 +1000
+## 5 669.4400000000001 2019-11-25 16:42:42 +1000</code></pre>
+<p>–</p>
+<p>Here we have the session ‘type’ and the respective data for each day which needs some cleaning up</p>
+<hr />
+</div>
+</div>
+<div id="plotting-data" class="section level1">
+<h1>Plotting Data</h1>
+<div id="now-lets-start-with-my-running-sessions-which-we-need-to-filter" class="section level2">
+<h2>Now lets start with my running sessions which we need to filter</h2>
+<p>We will use %&gt;% (pipes) from the <strong>tidyverse</strong> package as it is much quicker rather than making new data frames and will plot the data using <strong>ggplot2</strong></p>
+<p>–</p>
+<pre class="r"><code>df_workout %&gt;%
+  
+# Change data types (i.e. distance to m not km, numeric) 
+    mutate(workoutActivityType = as.character(workoutActivityType),
+        totalDistance = as.numeric(as.character(totalDistance))*1000, # convert to m not km
+        duration = as.numeric(duration), # Change to numeric 
+        endDate = as.Date(endDate)) %&gt;%  # change date from factor format
+# Only running sessions- depending on watch the name may differ
+      filter(workoutActivityType == &quot;HKWorkoutActivityTypeRunning&quot;) %&gt;%
+      filter(endDate &gt;= &quot;2020-03-23&quot;) %&gt;% # only after shut down
+
+# Create ggplot    
+ggplot(aes(x= endDate, y = totalDistance)) +
+    geom_bar(stat=&quot;identity&quot;, fill=&#39;#5ab4ac&#39;)+
+      labs(title = &quot;Running Sessions&quot;) +  # title
+      ylab(bquote(bold(&quot;Total distance (m)&quot;))) + # y axis title
+      xlab(bquote(bold(&quot;Date&quot;)))+ # x axis title
+      scale_x_date(date_breaks = &quot;7 days&quot;) + 
+        theme_minimal()  # remove some theme formatting</code></pre>
+<hr />
+</div>
+</div>
+<div id="daily-running-sessions" class="section level1">
+<h1>Daily Running Sessions</h1>
+<div id="now-we-have-our-first-plot-showing-running-volume-m-by-day-including-days-after-the-covid-shut-down.-not-exactly-periodised-but-its-better-than-nothing." class="section level2">
+<h2>Now we have our first plot, showing running volume (m) by day, including days after the COVID shut down. Not exactly periodised, but it’s better than nothing….</h2>
+<p><img src="/post/heidi-slides_files/figure-html/Distance%20Graph%20ouput-1.png" width="864" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="weekly-running-volume" class="section level1">
+<h1>Weekly Running Volume</h1>
+<div id="we-need-to-manipulate-the-data-a-bit-more-to-get-the-weekly-running-volume" class="section level2">
+<h2>We need to manipulate the data a bit more to get the weekly running volume</h2>
+<pre class="r"><code>df_workout %&gt;%
+   mutate(workoutActivityType = as.character(workoutActivityType),
+    totalDistance = as.numeric(as.character(totalDistance))*1000,
+    endDate = as.Date(endDate),
+    week = isoweek(ymd(endDate))) %&gt;% # Add week column
+      filter(workoutActivityType == &quot;HKWorkoutActivityTypeRunning&quot;) %&gt;%
+      filter(endDate &gt;= &quot;2020-03-23&quot;)%&gt;%
+          group_by(week)%&gt;% # summarise by week (starts week in 1st jan)
+ggplot(aes(x=week, y=totalDistance)) + 
+  geom_bar(stat=&quot;identity&quot;, fill=&#39;#5ab4ac&#39;)+labs(title = &quot;Running Sessions&quot;)+
+  ylab(bquote(bold(&quot;Total distance (m)&quot;))) +
+  xlab(bquote(bold(&quot;Week&quot;)))+
+  theme_minimal()</code></pre>
+<p><img src="/post/heidi-slides_files/figure-html/Weekly%20volume-1.png" width="480" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="energy-consumption" class="section level1">
+<h1>Energy Consumption</h1>
+<div id="i-want-to-know-energy-consumption-by-activity-type-which-we-need-to-rename" class="section level2">
+<h2>I want to know energy consumption by <strong>activity type</strong> which we need to rename</h2>
+<pre class="r"><code>df_workout %&gt;%
+   mutate(workoutActivityType = as.character(workoutActivityType),
+          totalEnergyBurned = as.numeric(as.character(totalEnergyBurned)),
+          endDate = as.Date(endDate), week = isoweek(ymd(endDate)), # Add week column
+          Type = str_sub(workoutActivityType, 22)) %&gt;% # new column- text after 22nd character
+   filter(endDate &gt;= &quot;2020-03-23&quot; &amp; Type %in% c(&#39;Running&#39;,&#39;Other&#39;)) %&gt;% # Filter out cycling
+            group_by(week) %&gt;%
+  
+ggplot(aes(x=week, y=totalEnergyBurned, fill=Type)) + 
+     geom_bar(stat=&quot;identity&quot;, position = position_dodge()) +
+       facet_wrap(~Type) +
+       labs(title = &quot;Energy Consumption by Session Type&quot;,
+            x = bquote(bold(&quot;Week&quot;)),
+            y = bquote(bold(&quot;Energy Consumption (kj)&quot;))) +
+       scale_x_continuous(breaks = seq(13, 19, by = 1)) +
+         theme_minimal() + 
+         theme(legend.position = &quot;none&quot;)  </code></pre>
+<hr />
+</div>
+</div>
+<div id="energy-consumption-plot" class="section level1">
+<h1>Energy Consumption Plot</h1>
+<div id="now-we-can-see-weekly-energy-consumption-by-activity-type.-other-sessions-include-weights-or-walking" class="section level2">
+<h2>Now we can see weekly energy consumption by <strong>activity type</strong>. ‘Other’ sessions include weights or walking</h2>
+<p><img src="/post/heidi-slides_files/figure-html/energy%20graph-1.png" width="960" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="general-activity-data" class="section level1">
+<h1>General Activity Data</h1>
+<p>Lets move on from workout data and import ‘Record’ data. This one will take a fair while to load</p>
+<p>–</p>
+<pre class="r"><code>df_record &lt;-  XML:::xmlAttrsToDataFrame(xml[&quot;//Record&quot;]) [c(1,6,8)]</code></pre>
+<p>–</p>
+<pre class="r"><code># See data types available in record
+  df_record %&gt;% 
+    mutate(Type = str_sub(type, 25)) %&gt;% # Include text after the 25th character
+    select(Type) %&gt;% distinct</code></pre>
+<pre><code>##                      Type
+## 1            DietaryWater
+## 2                  Height
+## 3                BodyMass
+## 4               HeartRate
+## 5               StepCount
+## 6  DistanceWalkingRunning
+## 7       BasalEnergyBurned
+## 8      ActiveEnergyBurned
+## 9          FlightsClimbed
+## 10       RestingHeartRate
+## 11 HeadphoneAudioExposure
+## 12          SleepAnalysis</code></pre>
+<p>–</p>
+<p>If you want to view the full dataset, you can use <strong>head(df_record)</strong></p>
+<hr />
+</div>
+<div id="steps-data-manipulation" class="section level1">
+<h1>Steps Data Manipulation</h1>
+<p>This one isn’t exactly useful for athletes - this is more for my own interest of my activity (or lack of) during the COVID shut down
+I am replicating a plot created <a href="https://taraskaduk.com/2019/03/23/apple-health/">online</a>, demonstrating step count<br />
+–</p>
+<pre class="r"><code>df_record %&gt;%
+mutate(Type = str_remove(type, &quot;HKQuantityTypeIdentifier&quot;), # Rename type 
+       value = as.numeric(as.character(value)),
+       Date = as.Date.character(startDate),weekday = wday(Date), # Day of week
+       hour = hour(startDate)) %&gt;% # Need to use the factor date
+   filter(Type == &#39;StepCount&#39; &amp; Date &gt;= &quot;2020-03-23&quot;) %&gt;%
+     group_by(Date, weekday, hour) %&gt;%  # Summarise by date, weekday and hour
+       summarise(value = sum(value)) %&gt;% # Sum steps over ^^
+     group_by(weekday, hour) %&gt;% # Now summarise by weekday and hour  
+       summarise(value = mean(value)) %&gt;% # Take mean steps over ^^
+   filter(between(hour,6,21)) %&gt;% # Filtering to include between 6am - 9pm
+ 
+ ggplot(aes(x=hour, y=weekday,  fill=value)) + 
+     geom_tile(col = &#39;grey40&#39;) + 
+     scale_fill_continuous(labels = scales::comma, low=&#39;grey95&#39;,high =&#39;#008FD5&#39;) +
+      scale_x_continuous(breaks = c(6,9,12,15,18), 
+         label = c(&quot;6 AM&quot;,&quot;9 AM&quot;, &quot;Midday&quot;, &quot;3PM&quot;, &quot;6 PM&quot;)) +
+     scale_y_reverse(breaks = c(1,2,3,4,5,6,7),
+      label =c(&quot;Sunday&quot;,&quot;Monday&quot;,&quot;Tuesday&quot;,&quot;Wednesday&quot;,&quot;Thursday&quot;,&quot;Friday&quot;,&quot;Saturday&quot;))+
+     labs(title = &quot;Step Count Heatmap&quot;) +
+     ylab(bquote(bold(&quot;Weekday&quot;))) + xlab(bquote(bold(&quot;Hour&quot;)))+
+     guides(fill=FALSE)+
+     coord_equal()+
+   theme_minimal()</code></pre>
+<hr />
+</div>
+<div id="steps-by-hour-by-day-heatmap" class="section level1">
+<h1>Steps by Hour by Day Heatmap</h1>
+<p>Not a lot of activity at the moment….</p>
+<p><img src="/post/heidi-slides_files/figure-html/Step%20count%20plot%20by%20hour-1.png" width="960" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+<div id="heart-rate" class="section level1">
+<h1>Heart Rate</h1>
+<div id="one-last-one---we-will-plot-hr-across-2-days.-i-have-added-a-colour-scale-for-low-green-and-high-red-hr" class="section level2">
+<h2>One last one - we will plot HR across 2 days. I have added a colour scale for low (green) and high (red) HR</h2>
+<p>.pull-left[</p>
+<pre class="r"><code>df_record %&gt;%
+  mutate(Type = str_remove(type, &quot;HKQuantityTypeIdentifier&quot;),
+    value = as.numeric(as.character(value)), 
+    startDate = as_datetime(startDate),
+    Date = as.Date.character(startDate)) %&gt;% 
+    filter(Type == &#39;HeartRate&#39;) %&gt;%
+      filter(Date &gt;= as.Date(&quot;2020-04-03&quot;) 
+        &amp;  Date &lt;= as.Date(&quot;2020-04-04&quot;)) %&gt;%
+  
+ggplot(aes(x=startDate, y=value,colour=value))+
+  geom_line(size=1) +
+  scale_color_gradient(low=&quot;green&quot;, high=&quot;red&quot;)+
+  labs(title = &quot;Heart Rate&quot;) +
+  ylab(bquote(bold(&quot;Heart Rate&quot;))) + 
+  xlab(bquote(bold(&quot;Date/Time&quot;)))+
+  theme_minimal()</code></pre>
+<p>]</p>
+<p>.pull-right[
+<img src="/post/heidi-slides_files/figure-html/HR%20Graph-1.png" width="576" />]</p>
+<hr />
+</div>
+</div>
+<div id="access-more-apple-health-info" class="section level1">
+<h1>Access More Apple Health Info</h1>
+<p>There are other data types available from Apple Health</p>
+<pre class="apple"><code>df_record &lt;-   XML:::xmlAttrsToDataFrame(xml[&quot;//Record&quot;])
+df_activity &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//ActivitySummary&quot;])
+df_workout &lt;-  XML:::xmlAttrsToDataFrame(xml[&quot;//Workout&quot;])
+df_clinical &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//ClinicalRecord&quot;])
+df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code></pre>
+<p>For more information on analysing Apple Health data, check out;</p>
+<p>####<a href="https://taraskaduk.com/2019/03/23/apple-health/">“Analyze and visualize your iPhone’s Health app data in R”</a></p>
+<p>####<a href="https://jeffjjohnston.github.io/rstudio/rmarkdown/2016/04/28/explore-your-apple-watch-heart-rate-data.html">“Explore your Apple Watch heart rate data in R”</a></p>
+<hr />
+</div>
+<div id="thanks-for-looking" class="section level1">
+<h1>Thanks for looking! 😊</h1>
+<div id="if-you-want-to-learn-more-about-r-there-is-some-awesome-work-out-there-from-fellow-aussies-click-on-the-names-to-view" class="section level4">
+<h4>If you want to learn more about R, there is some awesome work out there from fellow Aussies! Click on the names to view</h4>
+<p>####<a href="http://sportstatisticsrsweet.rbind.io/">Alice Sweeting</a><br><br></p>
+<p>####<a href="https://www.mitchhenderson.org/">Mitch Henderson</a><br><br></p>
+<p>####<a href="https://www.jacquietran.com/">Jacquie Tran</a><br><br></p>
+<p><a href="mailto:heidi.thornton@goldcoastfc.com.au">
+.white[&lt;<a href="mailto:i class="fas  fa-envelope "></i><heidi.thornton@goldcoastfc.com.au" class="email">i class="fas  fa-envelope "></i><heidi.thornton@goldcoastfc.com.au</a>]
+</a></p>
+<p><a href="http://twitter.com/heidithornton09">
+.white[&lt;<a href="mailto:i class="fab  fa-twitter "></i><@heidithornton09" class="email">i class="fab  fa-twitter "></i><@heidithornton09</a>]
+</a></p>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-to-tidy-catapult-10hz-export-data/" data-tooltip="How to tidy Catapult 10Hz export data">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/1/01/accessing-apple-health-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2020 Mitch Henderson. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-to-tidy-catapult-10hz-export-data/" data-tooltip="How to tidy Catapult 10Hz export data">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/1/01/accessing-apple-health-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F1%2F01%2Faccessing-apple-health-data%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Mitch Henderson</h4>
+    
+      <div id="about-card-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Australian Mens 7s<!-- raw HTML omitted -->Rugby Australia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sydney, Australia
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('/img/black.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/1\/01\/accessing-apple-health-data\/';
+          
+            this.page.identifier = '\/1\/01\/accessing-apple-health-data\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'mitchhenderson-org';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

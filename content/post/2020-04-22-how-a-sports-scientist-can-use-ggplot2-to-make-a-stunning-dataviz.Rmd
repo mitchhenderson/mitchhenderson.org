@@ -586,7 +586,7 @@ It reads in the plot as a `.png` image, the logo as another `.png` image, and pu
 
 The only parts of this you **may** want to modify are the sections below `### ONLY MODIFY FROM HERE DOWN`. You can choose which corner you want the logo in, what is the file name you saved the plot image, and the size of the logo (bigger number = smaller logo).
 
-```{r logo function, message=FALSE, warning=FALSE}
+```{r logo function, message=FALSE, warning=FALSE, eval=FALSE}
 # Add logo function -------------------------------------------------------
 
 add_logo <- function(plot_path, logo_path, logo_position, logo_scale = 10){
@@ -672,7 +672,7 @@ Mitch
 
 **Full code:**
 
-```{r full code, message=FALSE, warning=FALSE, eval=FALSE}
+```{r full code, eval=FALSE, message=FALSE, warning=FALSE}
 extrafont::loadfonts(device = "win")
 library(tidyverse)
 library(lubridate)

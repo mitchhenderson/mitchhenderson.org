@@ -6,10 +6,19 @@
     <description>Recent content in dataviz on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 22 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/tags/dataviz/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Visualising data measured from activity watches | Guest post by Heidi Thornton</title>
+      <link>/2020/05/visualising-data-measured-from-activity-watches/</link>
+      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/05/visualising-data-measured-from-activity-watches/</guid>
+      <description>Tracking data from your Apple watch doesn&amp;rsquo;t have to stay in an app. This post shows you how it can be exported, manipulated, and visualised using R.</description>
+    </item>
     
     <item>
       <title>How sports scientists can use ggplot2 in R to make better visualisations</title>

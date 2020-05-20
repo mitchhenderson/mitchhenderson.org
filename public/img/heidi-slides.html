@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Accessing Apple Health Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Heidi Thornton, PhD" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies-fonts.css" rel="stylesheet" />
+    <link href="libs/font-awesome-5.3.1/css/fontawesome-all.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Accessing Apple Health Data
+## Visualising data measured from activity watches
+### Heidi Thornton, PhD
+### 2020/05/15
+
+---
+
+
+background-image: url("img/Watch.png")
+background-size: 30%
+background-position: 50% 95%
+
+
+# Alternative Tracking Method
+
+
+#### As sports scientists, during this COVID-19 shut, we have limmited ways of determining adherance or completion of training programs (which of course are completed within Govenment guidelines)!
+--
+
+
+As a **guide** to measure the training completed during this period is via activity watches
+--
+
+
+Whilst the reliability and validity of activity watches is not widely available, these measure basic metrics such as total distance, duration, HR, energy burnt etc
+--
+
+
+Here, I will run through how to export this data without an API, basic analysis and manipulation and will demonstrate a few plots using ***ggplot***
+
+
+---
+
+background-image: url("img/Steps.png")
+background-size: 60%
+background-position: 50% 95%
+
+
+# Accessing Apple Health Data
+
+
+**Step 1** - Click on apple health app on your phone, on summary page in the top right, click on circle with first name letter (figure on left)
+--
+
+
+**Step 2** - Slide down to ‘Export All Health Data’ (middle figure)
+--
+
+
+**Step 3** - This export will take up to a few minutes, then a page to email/message etc it will pop up. Simply email to yourself and download it
+
+---
+
+background-image: url("img/Heart.png")
+background-size: 15%
+background-position: 95% 3%
+
+
+# Opening Apple Health Data
+
+
+You can open the zip folder directly using R, however for this project I will extract the file that is within the folder'apple_health_export'.
+--
+
+
+Inside the 'apple_health_export' folder, there will be 2 files. For the purpose of this, you will only need the ‘export’ file
+--
+
+
+I have made a new folder that houses all files where I will set my working directly to this location and load packages. If you don't have these packages installed use install.packages("packagename")
+
+
+
+```r
+# setwd("C:/Users/Heidi.Thornton/Desktop/Apple")
+```
+
+
+```r
+library("XML")
+library("methods")
+library("tidyverse")
+library("lubridate")
+```
+
+---
+
+background-image: url("img/R.png")
+background-size: 20%
+background-position: 50% 90%
+
+
+
+# Why do this in R?
+
+###R is reproducible - microsoft excel is not...
+--
+
+
+
+####We could simply export the raw data into excel and manipulate and visualise it there
+--
+
+
+
+####But...R isn't that difficult and there are lots of resources out there to help learn it
+--
+
+
+### Have the **end game** in mind
+
+
+---
+
+# Import the Data into R
+
+The file format (XML; Extensible Markup Language) is quite easy to work with in R using the **XML** package
+--
+
+
+I have created a folder where I have put my xml file. If you have multiple files you can use a loop to access them all - I will only use one file though
+--
+
+
+First, we need to make an xml object and view it's contents using summary(xml)
+--
+
+
+```r
+xml &lt;- xmlParse(paste("heidi-thornton_apple-data.xml"))
+summary(xml)
+```
+
+```
+## $nameCounts
+## 
+##        Record       Workout MetadataEntry    ExportDate    HealthData 
+##        200264           202            70             1             1 
+##            Me 
+##             1 
+## 
+## $numNodes
+## [1] 200539
+```
+
+---
+
+# View the Data
+
+I'm interested in the workout data which we can open using **xmlAttrsToDataFrame**
+--
+
+
+
+```r
+df_workout &lt;-  XML:::xmlAttrsToDataFrame(xml["//Workout"])[c(1:2,4,6,12)]
+head(df_workout, n = 5) # View the data
+```
+
+```
+##            workoutActivityType          duration    totalDistance
+## 1 HKWorkoutActivityTypeRunning 42.44751790364583 8.01347998046875
+## 2 HKWorkoutActivityTypeCycling 45.69051513671875    11.1736796875
+## 3   HKWorkoutActivityTypeOther 45.29886474609375 3.60589990234375
+## 4   HKWorkoutActivityTypeOther 58.97060139973959  1.7677099609375
+## 5 HKWorkoutActivityTypeRunning 39.55806477864584 4.17927978515625
+##   totalEnergyBurned                   endDate
+## 1          2041.792 2019-11-23 06:40:35 +1000
+## 2          1096.208 2019-11-24 06:56:26 +1000
+## 3             836.8 2019-11-24 15:27:41 +1000
+## 4           736.384 2019-11-25 05:27:23 +1000
+## 5 669.4400000000001 2019-11-25 16:42:42 +1000
+```
+
+--
+
+
+Here we have the session 'type' and the respective data for each day which needs some cleaning up
+
+
+---
+
+# Plotting Data 
+
+Now lets start with my running sessions which we need to filter
+--
+
+
+We will use %&gt;% (pipes) from the **tidyverse** package as it is much quicker rather than making new data frames and will plot the data using **ggplot2**
+
+--
+
+
+```r
+df_workout %&gt;%
+  
+# Change data types (i.e. distance to m not km, numeric) 
+    mutate(workoutActivityType = as.character(workoutActivityType),
+        totalDistance = as.numeric(as.character(totalDistance))*1000, # convert to m not km
+        duration = as.numeric(duration), # Change to numeric 
+        endDate = as.Date(endDate)) %&gt;%  # change date from factor format
+# Only running sessions- depending on watch the name may differ
+      filter(workoutActivityType == "HKWorkoutActivityTypeRunning") %&gt;%
+      filter(endDate &gt;= "2020-03-23") %&gt;% # only after shut down
+
+# Create ggplot    
+ggplot(aes(x= endDate, y = totalDistance)) +
+    geom_bar(stat="identity", fill='#5ab4ac')+
+      labs(title = "Running Sessions") +  # title
+      ylab(bquote(bold("Total distance (m)"))) + # y axis title
+      xlab(bquote(bold("Date")))+ # x axis title
+      scale_x_date(date_breaks = "7 days") + 
+        theme_minimal()  # remove some theme formatting
+```
+  
+  
+---
+
+# Daily Running Sessions
+
+Now we have our first plot, showing running volume (m) by day, including days after the COVID shut down. Not exactly periodised, but it's better than nothing....
+--
+
+
+&lt;img src="heidi-slides_files/figure-html/Distance Graph ouput-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Weekly Running Volume
+
+We need to manipulate the data a bit more to get the weekly running volume
+--
+
+
+```r
+df_workout %&gt;%
+   mutate(workoutActivityType = as.character(workoutActivityType),
+    totalDistance = as.numeric(as.character(totalDistance))*1000,
+    endDate = as.Date(endDate),
+    week = isoweek(ymd(endDate))) %&gt;% # Add week column
+      filter(workoutActivityType == "HKWorkoutActivityTypeRunning") %&gt;%
+      filter(endDate &gt;= "2020-03-23")%&gt;%
+          group_by(week)%&gt;% # summarise by week (starts week in 1st jan)
+ggplot(aes(x=week, y=totalDistance)) + 
+  geom_bar(stat="identity", fill='#5ab4ac')+labs(title = "Running Sessions")+
+  ylab(bquote(bold("Total distance (m)"))) +
+  xlab(bquote(bold("Week")))+
+  theme_minimal()
+```
+
+&lt;img src="heidi-slides_files/figure-html/Weekly volume-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Energy Consumption
+
+I want to know energy consumption by **activity type** which we need to rename
+--
+
+
+```r
+df_workout %&gt;%
+   mutate(workoutActivityType = as.character(workoutActivityType),
+          totalEnergyBurned = as.numeric(as.character(totalEnergyBurned)),
+          endDate = as.Date(endDate), week = isoweek(ymd(endDate)), # Add week column
+          Type = str_sub(workoutActivityType, 22)) %&gt;% # new column- text after 22nd character
+   filter(endDate &gt;= "2020-03-23" &amp; Type %in% c('Running','Other')) %&gt;% # Filter out cycling
+            group_by(week) %&gt;%
+  
+ggplot(aes(x=week, y=totalEnergyBurned, fill=Type)) + 
+     geom_bar(stat="identity", position = position_dodge()) +
+       facet_wrap(~Type) +
+       labs(title = "Energy Consumption by Session Type",
+            x = bquote(bold("Week")),
+            y = bquote(bold("Energy Consumption (kj)"))) +
+       scale_x_continuous(breaks = seq(13, 19, by = 1)) +
+         theme_minimal() + 
+         theme(legend.position = "none")  
+```
+
+---
+
+# Energy Consumption Plot
+
+Now we can see weekly energy consumption by **activity type**. 'Other' sessions include weights or walking  
+--
+
+
+&lt;img src="heidi-slides_files/figure-html/energy graph-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+
+# General Activity Data
+
+Lets move on from workout data and import 'Record' data. This one will take a fair while to load 
+
+--
+
+
+
+```r
+df_record &lt;-  XML:::xmlAttrsToDataFrame(xml["//Record"]) [c(1,6,8)]
+```
+
+--
+
+
+```r
+# See data types available in record
+  df_record %&gt;% 
+    mutate(Type = str_sub(type, 25)) %&gt;% # Include text after the 25th character
+    select(Type) %&gt;% distinct
+```
+
+```
+##                      Type
+## 1            DietaryWater
+## 2                  Height
+## 3                BodyMass
+## 4               HeartRate
+## 5               StepCount
+## 6  DistanceWalkingRunning
+## 7       BasalEnergyBurned
+## 8      ActiveEnergyBurned
+## 9          FlightsClimbed
+## 10       RestingHeartRate
+## 11 HeadphoneAudioExposure
+## 12          SleepAnalysis
+```
+--
+
+If you want to view the full dataset, you can use **head(df_record)**
+
+
+---
+
+# Steps Data Manipulation
+
+This one isn't exactly useful for athletes - this is more for my own interest of my activity (or lack of) during the COVID shut down
+I am replicating a plot created [online](https://taraskaduk.com/2019/03/23/apple-health/), demonstrating step count  
+--
+
+
+```r
+df_record %&gt;%
+mutate(Type = str_remove(type, "HKQuantityTypeIdentifier"), # Rename type 
+       value = as.numeric(as.character(value)),
+       Date = as.Date.character(startDate),weekday = wday(Date), # Day of week
+       hour = hour(startDate)) %&gt;% # Need to use the factor date
+   filter(Type == 'StepCount' &amp; Date &gt;= "2020-03-23") %&gt;%
+     group_by(Date, weekday, hour) %&gt;%  # Summarise by date, weekday and hour
+       summarise(value = sum(value)) %&gt;% # Sum steps over ^^
+     group_by(weekday, hour) %&gt;% # Now summarise by weekday and hour  
+       summarise(value = mean(value)) %&gt;% # Take mean steps over ^^
+   filter(between(hour,6,21)) %&gt;% # Filtering to include between 6am - 9pm
+ 
+ ggplot(aes(x=hour, y=weekday,  fill=value)) + 
+     geom_tile(col = 'grey40') + 
+     scale_fill_continuous(labels = scales::comma, low='grey95',high ='#008FD5') +
+      scale_x_continuous(breaks = c(6,9,12,15,18), 
+         label = c("6 AM","9 AM", "Midday", "3PM", "6 PM")) +
+     scale_y_reverse(breaks = c(1,2,3,4,5,6,7),
+      label =c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"))+
+     labs(title = "Step Count Heatmap") +
+     ylab(bquote(bold("Weekday"))) + xlab(bquote(bold("Hour")))+
+     guides(fill=FALSE)+
+     coord_equal()+
+   theme_minimal()
+```
+
+
+---
+
+# Steps by Hour by Day Heatmap
+
+Not a lot of activity at the moment....
+
+&lt;img src="heidi-slides_files/figure-html/Step count plot by hour-1.png" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+# Heart Rate
+
+One last one - we will plot HR across 2 days. I have added a colour scale for low (green) and high (red) HR
+--
+
+.pull-left[
+
+```r
+df_record %&gt;%
+  mutate(Type = str_remove(type, "HKQuantityTypeIdentifier"),
+    value = as.numeric(as.character(value)), 
+    startDate = as_datetime(startDate),
+    Date = as.Date.character(startDate)) %&gt;% 
+    filter(Type == 'HeartRate') %&gt;%
+      filter(Date &gt;= as.Date("2020-04-03") 
+        &amp;  Date &lt;= as.Date("2020-04-04")) %&gt;%
+  
+ggplot(aes(x=startDate, y=value,colour=value))+
+  geom_line(size=1) +
+  scale_color_gradient(low="green", high="red")+
+  labs(title = "Heart Rate") +
+  ylab(bquote(bold("Heart Rate"))) + 
+  xlab(bquote(bold("Date/Time")))+
+  theme_minimal()
+```
+
+]
+
+
+.pull-right[
+![](heidi-slides_files/figure-html/HR Graph-1.png)&lt;!-- --&gt;
+]
+
+---
+
+# Access More Apple Health Info
+
+There are other data types available from Apple Health
+
+
+
+```apple
+df_record &lt;-   XML:::xmlAttrsToDataFrame(xml["//Record"])
+df_activity &lt;- XML:::xmlAttrsToDataFrame(xml["//ActivitySummary"])
+df_workout &lt;-  XML:::xmlAttrsToDataFrame(xml["//Workout"])
+df_clinical &lt;- XML:::xmlAttrsToDataFrame(xml["//ClinicalRecord"])
+df_location &lt;- XML:::xmlAttrsToDataFrame(xml["//Location"])
+```
+
+
+
+For more information on analysing Apple Health data, check out;
+
+####["Analyze and visualize your iPhone's Health app data in R"](https://taraskaduk.com/2019/03/23/apple-health/)
+
+####["Explore your Apple Watch heart rate data in R"](https://jeffjjohnston.github.io/rstudio/rmarkdown/2016/04/28/explore-your-apple-watch-heart-rate-data.html)
+
+
+---
+
+# Thanks for looking! 😊
+
+
+#### If you want to learn more about R, there is some awesome work out there from fellow Aussies! Click on the names to view
+
+####[Alice Sweeting](http://sportstatisticsrsweet.rbind.io/)&lt;br&gt;&lt;br&gt;
+
+####[Mitch Henderson](https://www.mitchhenderson.org/)&lt;br&gt;&lt;br&gt;
+
+####[Jacquie Tran](https://www.jacquietran.com/)&lt;br&gt;&lt;br&gt;
+
+
+&lt;a href="mailto:heidi.thornton@goldcoastfc.com.au"&gt;
+.white[&lt;i class="fas  fa-envelope "></i><heidi.thornton@goldcoastfc.com.au]
+&lt;/a&gt;
+
+&lt;a href="http://twitter.com/heidithornton09"&gt;
+.white[&lt;i class="fab  fa-twitter "></i><@heidithornton09]
+&lt;/a&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "15.5:10"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -16,7 +16,7 @@ thumbnailImagePosition: left
 
 ---
 
-The export format of Catapult's 10Hz GPS data isn't ideal for analysis. This article teaches you how you can tidy it using R.
+The export format of Catapult's 10Hz GPS data isn't ideal for analysis. This post shows you how to tidy it using R.
 
 <!--more-->
 
