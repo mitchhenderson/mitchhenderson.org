@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sports science on mitchhenderson.org</title>
-    <link>/categories/sports-science/</link>
+    <link>https://www.mitchhenderson.org/categories/sports-science/</link>
     <description>Recent content in Sports science on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/sports-science/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mitchhenderson.org/categories/sports-science/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Visualising Apple Health data | Guest post by Heidi Thornton</title>
-      <link>/2020/05/visualising-data-measured-from-activity-watches/</link>
+      <link>https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/05/visualising-data-measured-from-activity-watches/</guid>
+      <guid>https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/</guid>
       <description>Tracking data from your Apple watch doesn&amp;rsquo;t have to stay in an app. This post shows you how it can be exported, manipulated, and visualised using R.</description>
     </item>
     
     <item>
       <title>How sports scientists can use ggplot2 in R to make better visualisations</title>
-      <link>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</link>
+      <link>https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</link>
       <pubDate>Wed, 22 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</guid>
+      <guid>https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</guid>
       <description>Great visualisations help communicate your message more clearly. This post shows you an example of my process.</description>
     </item>
     
     <item>
       <title>How to tidy Catapult 10Hz export data</title>
-      <link>/2020/04/how-to-tidy-catapult-10hz-export-data/</link>
+      <link>https://www.mitchhenderson.org/2020/04/how-to-tidy-catapult-10hz-export-data/</link>
       <pubDate>Sun, 05 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>/2020/04/how-to-tidy-catapult-10hz-export-data/</guid>
+      <guid>https://www.mitchhenderson.org/2020/04/how-to-tidy-catapult-10hz-export-data/</guid>
       <description>&lt;p&gt;The export format of Catapult&amp;rsquo;s 10Hz GPS data isn&amp;rsquo;t ideal for analysis. This post shows you how to tidy it using R.&lt;/p&gt;</description>
     </item>
     

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on mitchhenderson.org</title>
-    <link>/categories/</link>
+    <link>https://www.mitchhenderson.org/categories/</link>
     <description>Recent content in Categories on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.mitchhenderson.org/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Data science</title>
-      <link>/categories/data-science/</link>
+      <link>https://www.mitchhenderson.org/categories/data-science/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/categories/data-science/</guid>
+      <guid>https://www.mitchhenderson.org/categories/data-science/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sports science</title>
-      <link>/categories/sports-science/</link>
+      <link>https://www.mitchhenderson.org/categories/sports-science/</link>
       <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>/categories/sports-science/</guid>
+      <guid>https://www.mitchhenderson.org/categories/sports-science/</guid>
       <description></description>
     </item>
     

@@ -15,8 +15,8 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Visualising Apple Health data | Guest post by Heidi Thornton">
 <meta name="twitter:title" content="Visualising Apple Health data | Guest post by Heidi Thornton">
-<meta property="og:url" content="/2020/05/visualising-data-measured-from-activity-watches/">
-<meta property="twitter:url" content="/2020/05/visualising-data-measured-from-activity-watches/">
+<meta property="og:url" content="https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/">
+<meta property="twitter:url" content="https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/">
 <meta property="og:site_name" content="mitchhenderson.org">
 <meta property="og:description" content="Tracking data from your Apple watch doesn&rsquo;t have to stay in an app. This post shows you how it can be exported, manipulated, and visualised using R.">
 <meta name="twitter:description" content="Tracking data from your Apple watch doesn&rsquo;t have to stay in an app. This post shows you how it can be exported, manipulated, and visualised using R.">
@@ -57,12 +57,12 @@
 
 
 
-  <meta property="og:image" content="/img/Heart.png">
-  <meta property="twitter:image" content="/img/Heart.png">
+  <meta property="og:image" content="https://www.mitchhenderson.org/img/Heart.png">
+  <meta property="twitter:image" content="https://www.mitchhenderson.org/img/Heart.png">
 
 
-  <meta property="og:image" content="/img/apple-watch-calorie-tracking.jpg">
-  <meta property="twitter:image" content="/img/apple-watch-calorie-tracking.jpg">
+  <meta property="og:image" content="https://www.mitchhenderson.org/img/apple-watch-calorie-tracking.jpg">
+  <meta property="twitter:image" content="https://www.mitchhenderson.org/img/apple-watch-calorie-tracking.jpg">
 
 
 
@@ -73,12 +73,12 @@
 
     <title>Visualising Apple Health data | Guest post by Heidi Thornton</title>
 
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="https://www.mitchhenderson.org/favicon.png">
     
 
     
 
-    <link rel="canonical" href="/2020/05/visualising-data-measured-from-activity-watches/">
+    <link rel="canonical" href="https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/">
 
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
@@ -86,7 +86,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
     
     
-    <link rel="stylesheet" href="/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    <link rel="stylesheet" href="https://www.mitchhenderson.org/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
     
     
 
@@ -114,12 +114,12 @@ if (!doNotTrack) {
       <header id="header" data-behavior="5">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
-    <a class="header-title-link" href="/">mitchhenderson.org</a>
+    <a class="header-title-link" href="https://www.mitchhenderson.org/">mitchhenderson.org</a>
   </div>
   
     
       <a class="header-right-picture "
-         href="/#about">
+         href="https://www.mitchhenderson.org/#about">
     
     
     
@@ -135,7 +135,7 @@ if (!doNotTrack) {
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
-        <a href="/#about">
+        <a href="https://www.mitchhenderson.org/#about">
           <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
         </a>
         <h4 class="sidebar-profile-name">Mitch Henderson</h4>
@@ -148,7 +148,7 @@ if (!doNotTrack) {
       
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="/">
+      <a class="sidebar-button-link " href="https://www.mitchhenderson.org/">
     
       <i class="sidebar-button-icon fa fa-lg fa-home"></i>
       
@@ -158,7 +158,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="/about/index.html">
+      <a class="sidebar-button-link " href="https://www.mitchhenderson.org/about/index.html">
     
       <i class="sidebar-button-icon fa fa-lg fa-user"></i>
       
@@ -182,7 +182,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_">
+      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_" target="_blank" rel="noopener">
     
       <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
       
@@ -192,7 +192,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber">
+      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber" target="_blank" rel="noopener">
     
       <i class="sidebar-button-icon fa fa-lg fa-youtube"></i>
       
@@ -202,7 +202,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/">
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/" target="_blank" rel="noopener">
     
       <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
       
@@ -212,7 +212,7 @@ if (!doNotTrack) {
 
   <li class="sidebar-button">
     
-      <a class="sidebar-button-link " href="https://github.com/mitchhenderson">
+      <a class="sidebar-button-link " href="https://github.com/mitchhenderson" target="_blank" rel="noopener">
     
       <i class="sidebar-button-icon fa fa-lg fa-github"></i>
       
@@ -266,9 +266,9 @@ if (!doNotTrack) {
   
     <span>in</span>
     
-      <a class="category-link" href="/categories/data-science">Data science</a>, 
+      <a class="category-link" href="https://www.mitchhenderson.org/categories/data-science">Data science</a>, 
     
-      <a class="category-link" href="/categories/sports-science">Sports science</a>
+      <a class="category-link" href="https://www.mitchhenderson.org/categories/sports-science">Sports science</a>
     
   
 
@@ -281,7 +281,7 @@ if (!doNotTrack) {
               
 
 
-<p><img src="/img/Applehealth.jpg" /></p>
+<p><img src="https://www.mitchhenderson.org/img/Applehealth.jpg" /></p>
 <p>As sports scientists during the COVID-19 shutdown, we have limited ways of determining adherence to training programs (completed within govenment guidelines of course!).</p>
 <p>Data from smart watches provide practitioners with <em>basic measures</em> that can be used as a <em>rough guide</em> to quantify training over this period (when using the more sophisticated technologies isn’t possible).</p>
 <p>Although the reliability and validity data of these devices aren’t widely available, they provide basic metrics such as total distance, duration, heart rate, and energy burnt etc.</p>
@@ -295,7 +295,7 @@ if (!doNotTrack) {
 <p><br></p>
 <div id="accessing-apple-health-data" class="section level1">
 <h1>Accessing Apple Health data</h1>
-<p><img src="/img/Steps.png" /></p>
+<p><img src="https://www.mitchhenderson.org/img/Steps.png" /></p>
 <div id="step-1" class="section level2">
 <h2>Step 1</h2>
 <p>Open the Apple Health app on your phone, then <strong>summary page</strong> at the top right, then tap the circle showing the first letter of your first name on the top right (left figure above).</p>
@@ -323,7 +323,7 @@ library(&quot;lubridate&quot;)</code></pre>
 </div>
 <div id="why-do-this-in-r" class="section level1">
 <h1>Why do this in R?</h1>
-<p><img src="/img/R.png" /></p>
+<p><img src="https://www.mitchhenderson.org/img/R.png" /></p>
 <p><br></p>
 <div id="r-is-reproducible-microsoft-excel-is-not" class="section level3">
 <h3>R is reproducible | Microsoft Excel is not</h3>
@@ -407,7 +407,7 @@ ggplot(aes(x= endDate, y = totalDistance)) +
         axis.line.x = element_line(colour = &quot;black&quot;, size = 1),
         axis.title = element_text(face = &quot;bold&quot;),
         plot.title = element_text(face = &quot;bold&quot;))</code></pre>
-<p><img src="/post/heidi-post_files/figure-html/Distance%20Graph%20ouput-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.mitchhenderson.org/post/heidi-post_files/figure-html/Distance%20Graph%20ouput-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>Now we have our first plot showing my running over the days after the COVID shut down.</p>
 <p><br></p>
 </div>
@@ -440,7 +440,7 @@ ggplot(aes(x = week, y = totalDistance)) +
         axis.line.x = element_line(colour = &quot;black&quot;, size = 1),
         axis.title = element_text(face = &quot;bold&quot;),
         plot.title = element_text(face = &quot;bold&quot;))</code></pre>
-<p><img src="/post/heidi-post_files/figure-html/Weekly%20volume-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.mitchhenderson.org/post/heidi-post_files/figure-html/Weekly%20volume-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
 <div id="energy-consumption" class="section level3">
@@ -481,7 +481,7 @@ ggplot(aes(x = week, y = totalEnergyBurned, fill = Type)) +
           axis.title = element_text(face = &quot;bold&quot;),
           plot.title = element_text(face = &quot;bold&quot;),
           strip.text = element_text(face = &quot;bold&quot;))</code></pre>
-<p><img src="/post/heidi-post_files/figure-html/energy%20graph-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.mitchhenderson.org/post/heidi-post_files/figure-html/energy%20graph-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
 <div id="general-activity-data" class="section level3">
@@ -556,7 +556,7 @@ ggplot(aes(x = hour, y = weekday,  fill = value)) +
   theme_minimal() +
   theme(panel.grid.major = element_blank(),
         plot.title = element_text(face = &quot;bold&quot;))</code></pre>
-<p><img src="/post/heidi-post_files/figure-html/Step%20count%20plot%20by%20hour-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="https://www.mitchhenderson.org/post/heidi-post_files/figure-html/Step%20count%20plot%20by%20hour-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p><br></p>
 </div>
 <div id="heart-rate-data" class="section level3">
@@ -583,7 +583,7 @@ ggplot(aes(x = startDate, y = value, colour = value)) +
         panel.grid.major.x = element_blank(),
         axis.title = element_text(face = &quot;bold&quot;),
         plot.title = element_text(face = &quot;bold&quot;))</code></pre>
-<p><img src="/post/heidi-post_files/figure-html/HR%20Graph-1.png" width="672" /></p>
+<p><img src="https://www.mitchhenderson.org/post/heidi-post_files/figure-html/HR%20Graph-1.png" width="672" /></p>
 <p><br></p>
 </div>
 </div>
@@ -849,9 +849,9 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">TAGGED IN</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="/tags/dataviz/">dataviz</a>
+  <a class="tag tag--primary tag--small" href="https://www.mitchhenderson.org/tags/dataviz/">dataviz</a>
 
-  <a class="tag tag--primary tag--small" href="/tags/r/">R</a>
+  <a class="tag tag--primary tag--small" href="https://www.mitchhenderson.org/tags/r/">R</a>
 
                   </div>
                 
@@ -872,7 +872,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/" data-tooltip="How sports scientists can use ggplot2 in R to make better visualisations">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/" data-tooltip="How sports scientists can use ggplot2 in R to make better visualisations">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -890,7 +890,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/05/visualising-data-measured-from-activity-watches/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
@@ -925,7 +925,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
         </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
-    &copy; 2020 Mitch Henderson. All Rights Reserved
+    &copy; 2021 Mitch Henderson. All Rights Reserved
   </span>
 </footer>
 
@@ -946,7 +946,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/" data-tooltip="How sports scientists can use ggplot2 in R to make better visualisations">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/" data-tooltip="How sports scientists can use ggplot2 in R to make better visualisations">
               
                   <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
                   <i class="fa fa-angle-right"></i>
@@ -964,7 +964,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2020/05/visualising-data-measured-from-activity-watches/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
@@ -994,7 +994,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2020%2F05%2Fvisualising-data-measured-from-activity-watches%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fwww.mitchhenderson.org%2F2020%2F05%2Fvisualising-data-measured-from-activity-watches%2F">
           <i class="fa fa-twitter"></i><span>Share on Twitter</span>
         </a>
       </li>
@@ -1038,7 +1038,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
     
   
     
-      <div id="cover" style="background-image:url('/img/black.jpg');"></div>
+      <div id="cover" style="background-image:url('https://www.mitchhenderson.org/img/black.jpg');"></div>
     
   
 
@@ -1051,7 +1051,7 @@ df_location &lt;- XML:::xmlAttrsToDataFrame(xml[&quot;//Location&quot;])</code><
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
 
 
-<script src="/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+<script src="https://www.mitchhenderson.org/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
 
 
 <script lang="javascript">
@@ -1086,7 +1086,7 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = '\/2020\/05\/visualising-data-measured-from-activity-watches\/';
+          this.page.url = 'https:\/\/www.mitchhenderson.org\/2020\/05\/visualising-data-measured-from-activity-watches\/';
           
             this.page.identifier = '\/2020\/05\/visualising-data-measured-from-activity-watches\/'
           

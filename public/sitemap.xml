@@ -3,72 +3,72 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/categories/</loc>
+    <loc>https://www.mitchhenderson.org/categories/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/data-science/</loc>
+    <loc>https://www.mitchhenderson.org/categories/data-science/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/dataviz/</loc>
+    <loc>https://www.mitchhenderson.org/tags/dataviz/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
+    <loc>https://www.mitchhenderson.org/post/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/r/</loc>
+    <loc>https://www.mitchhenderson.org/tags/r/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/categories/sports-science/</loc>
+    <loc>https://www.mitchhenderson.org/categories/sports-science/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/</loc>
+    <loc>https://www.mitchhenderson.org/tags/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2020/05/visualising-data-measured-from-activity-watches/</loc>
+    <loc>https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/</loc>
     <lastmod>2020-05-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</loc>
+    <loc>https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/</loc>
     <lastmod>2020-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/gps/</loc>
+    <loc>https://www.mitchhenderson.org/tags/gps/</loc>
     <lastmod>2020-04-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/2020/04/how-to-tidy-catapult-10hz-export-data/</loc>
+    <loc>https://www.mitchhenderson.org/2020/04/how-to-tidy-catapult-10hz-export-data/</loc>
     <lastmod>2020-04-05T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/about/</loc>
+    <loc>https://www.mitchhenderson.org/about/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/</loc>
+    <loc>https://www.mitchhenderson.org/</loc>
     <lastmod>2020-03-20T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>/archives/</loc>
+    <loc>https://www.mitchhenderson.org/archives/</loc>
   </url>
   
 </urlset>
