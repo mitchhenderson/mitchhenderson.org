@@ -16,7 +16,7 @@ coverMeta: out
 metaAlignment: center
 thumbnailImage: /img/OF.jpg
 thumbnailImagePosition: left
-summary: Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.
+summary: Running symmetry data may inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualised in R.
 ---
 
 An interesting, but seemingly underused, metric available in the [Catapult](https://www.catapultsports.com/) system is running imbalance. 
