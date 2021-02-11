@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Hugo 0.80.0 with theme Tranquilpeak 0.4.7-BETA">
+<meta name="author" content="Mitch Henderson">
+<meta name="keywords" content="tech">
+<meta name="description" content="Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.">
+
+
+<meta property="og:description" content="Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Exploring Catapult&#39;s running imbalance data">
+<meta name="twitter:title" content="Exploring Catapult&#39;s running imbalance data">
+<meta property="og:url" content="https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/">
+<meta property="twitter:url" content="https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/">
+<meta property="og:site_name" content="mitchhenderson.org">
+<meta property="og:description" content="Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.">
+<meta name="twitter:description" content="Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.">
+<meta property="og:locale" content="en-us">
+
+  
+    <meta property="article:published_time" content="2021-02-10T00:00:00">
+  
+  
+    <meta property="article:modified_time" content="2021-02-10T00:00:00">
+  
+  
+  
+    
+      <meta property="article:section" content="Sport science">
+    
+      <meta property="article:section" content="Data science">
+    
+  
+  
+    
+      <meta property="article:tag" content="dataviz">
+    
+      <meta property="article:tag" content="R">
+    
+  
+
+
+<meta name="twitter:card" content="summary">
+
+  <meta name="twitter:site" content="@mitchhendo_">
+
+
+  <meta name="twitter:creator" content="@mitchhendo_">
+
+
+
+
+
+
+  <meta property="og:image" content="https://www.mitchhenderson.org/img/OF.jpg">
+  <meta property="twitter:image" content="https://www.mitchhenderson.org/img/OF.jpg">
+
+
+  <meta property="og:image" content="https://www.mitchhenderson.org/img/tightrope.jpg">
+  <meta property="twitter:image" content="https://www.mitchhenderson.org/img/tightrope.jpg">
+
+
+
+
+  <meta property="og:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+  <meta property="twitter:image" content="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=640">
+
+
+    <title>Exploring Catapult&#39;s running imbalance data</title>
+
+    <link rel="icon" href="https://www.mitchhenderson.org/favicon.png">
+    
+
+    
+
+    <link rel="canonical" href="https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/">
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="https://www.mitchhenderson.org/css/style-twzjdbqhmnnacqs0pwwdzcdbt8yhv8giawvjqjmyfoqnvazl0dalmnhdkvp7.min.css" />
+    
+    
+
+    
+      
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-154979770-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="5">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="https://www.mitchhenderson.org/">mitchhenderson.org</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="https://www.mitchhenderson.org/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="5">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="https://www.mitchhenderson.org/#about">
+          <img class="sidebar-profile-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Mitch Henderson</h4>
+        
+          <h5 class="sidebar-profile-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.mitchhenderson.org/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.mitchhenderson.org/about/index.html">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-user"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="mailto:mail@mitchhenderson.org" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-envelope"></i>
+      
+      <span class="sidebar-button-desc">Email</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://twitter.com/mitchhendo_" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-twitter"></i>
+      
+      <span class="sidebar-button-desc">Twitter</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.youtube.com/channel/UCMt6OBIhnfyaul5M2JgudQg?view_as=subscriber" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-youtube"></i>
+      
+      <span class="sidebar-button-desc">YouTube</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://www.linkedin.com/in/mitch-henderson-9761b8114/" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-linkedin"></i>
+      
+      <span class="sidebar-button-desc">LinkedIn</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/mitchhenderson" target="_blank" rel="noopener">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+  <div class="post-header-cover
+              text-center
+              "
+       style="background-image:url('/img/tightrope.jpg')"
+       data-behavior="5">
+    
+  </div>
+
+
+      <div id="main" data-behavior="5"
+        class="hasCover
+               hasCoverMetaOut
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-center">
+  
+    <h1 class="post-title" itemprop="headline">
+      Exploring Catapult&#39;s running imbalance data
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2021-02-10T00:00:00Z">
+        
+  February 10, 2021
+
+      </time>
+    
+    
+  
+  
+    <span>in</span>
+    
+      <a class="category-link" href="https://www.mitchhenderson.org/categories/sport-science">Sport science</a>, 
+    
+      <a class="category-link" href="https://www.mitchhenderson.org/categories/data-science">Data science</a>
+    
+  
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              
+<script src="https://www.mitchhenderson.org/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="https://www.mitchhenderson.org/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="https://www.mitchhenderson.org/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
+
+
+<p>An interesting, but seemingly underused, metric available in the <a href="https://www.catapultsports.com/">Catapult</a> system is running imbalance.</p>
+<p>Catapult’s <em>Openfield</em> software offers running symmetry metrics that measure the load imbalance between the right and left leg when running. Detailed information about the running symmetry metrics and how to set them up is available in the <a href="https://support.catapultsports.com/hc/en-us/articles/360001044935-How-to-Detect-Running-Symmetry-Metrics#h_69f950e0-c678-4257-8fac-a490c3493122">Catapult Support documentation</a>.</p>
+<p>The documentation claims the practical applications of running symmetry metrics include:</p>
+<ul>
+<li><strong>Rehabilitation</strong> - See changes over time as the athlete improves during the process of rehabilitation</li>
+<li><strong>Return to Play</strong> - Use Running Symmetry as an objective return to play marker</li>
+<li><strong>Athlete Screening</strong> - Use Running Symmetry on a weekly basis to identify changes in running mechanics</li>
+</ul>
+<p>Running imbalance (%), arguably the most general running symmetry metric, is defined by Catapult as:</p>
+<blockquote>
+<p>“Average percentage load difference between left and right legs, across all Running Symmetry Series/Efforts.
+A negative running imbalance % is indicative of an x% additional load on the left side (where x is the running imbalance value).
+A positive running imbalance % is indicative of an x% additional load on the right side (where x is the running imbalance value).”</p>
+</blockquote>
+<p>This post will show you how to export the data from <em>Openfield Cloud</em>, and visualise it using <a href="https://cran.r-project.org/">R</a> and <a href="https://rstudio.com/">RStudio</a>.</p>
+<p><img src="https://www.mitchhenderson.org/img/left_vs_right.png" /></p>
+<p><em>The full un-separated code is available at the end of this post for anyone looking to copy it into their script.</em></p>
+<div id="step-1-export-from-openfield-cloud" class="section level1">
+<h1>Step 1 | Export from Openfield Cloud</h1>
+<p>First thing to do is follow the steps outlined in the <a href="https://support.catapultsports.com/hc/en-us/articles/360001044935-How-to-Detect-Running-Symmetry-Metrics#h_69f950e0-c678-4257-8fac-a490c3493122">Catapult Support documentation</a> to set up running symmetry metrics.</p>
+<p>For a reason beyond my knowledge, when you perform a bulk export from Openfield Cloud with ‘All Parameters’ selected (when choosing a parameter group), you get an inconsistent number of columns in the <code>.csv</code> exports (<em>if anyone knows why this might be, I’m interested to know!</em>). This causes issues when we try to import and join the data into one data frame (<em>i.e. table of data</em>) in R.</p>
+<p>To remedy this, we need to create a parameter group to <strong>lock</strong> the columns that we want in our exports (ensuring a consistent export format).</p>
+<div id="create-a-parameter-group" class="section level3">
+<h3>Create a parameter group</h3>
+<p>After logging into Openfield Cloud, press <em>Settings</em></p>
+<p><img src="https://www.mitchhenderson.org/img/OF-settings.JPG" /></p>
+<p>Select <em>Parameters</em> in the sidebar, then <em>Parameter Groups</em> in the top bar.</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-parameters.JPG" /></p>
+<p>Now we need to <em>Add new</em>.</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-addnew.JPG" /></p>
+<p>We can give the group we’re creating a name (<em>I’m calling mine “Imbalance”</em>) and select the metrics we’re interested in (<em>I’m only selecting “Date” and “Running Imbalance”</em>). Then we click the orange <em>Add Parameter Group</em> at the bottom of the window to save our new group.</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-imbalancegroup.JPG" /></p>
+</div>
+<div id="select-sessions-to-export" class="section level3">
+<h3>Select sessions to export</h3>
+<p>The <em>Activities</em> bar on the left of screen can be used to select multiple sessions that we’re interested in exporting data for. Using the click buttons on the right on the bar, we can select one or more years, months, days, or activities to export (<em>I’ve selected all of 2021 below</em>).</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-sessionselect.JPG" /></p>
+<p>When more than one activity is selected, a green <em>Bulk Export CTRs</em> button will become available in the top right of screen (also showing how many activities have been selected). Click on it.</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-bulkexport.JPG" /></p>
+<p>This will bring up a window allowing us to select some options for our exports. The only things we need to do is select our newly created parameter group (<em>I’m selecting “Imbalance” below</em>) and enter the email you’d like the links for the exports to go to. Then select <em>Export Bulk CTR</em>.</p>
+<p><img src="https://www.mitchhenderson.org/img/OF-email.JPG" /></p>
+</div>
+<div id="download-exports" class="section level3">
+<h3>Download exports</h3>
+<p>You’ll then shortly receive one or more emails (depending on how many activities, and therefore data, you’re exporting) from <strong>Openfield Web</strong> with links to download <code>.zip</code> folders containing the exports.</p>
+<p><img src="https://www.mitchhenderson.org/img/openfield-web-emails.JPG" /></p>
+</div>
+</div>
+<div id="step-2-import-into-rstudio" class="section level1">
+<h1>Step 2 | Import into RStudio</h1>
+<p>Save all of your exports (keep them in <code>.csv</code> format) in a folder within your working directory (you can check your working directory in R or RStudio by running <code>getwd()</code> and you can change it with <code>setwd()</code>, but I’d recommend creating a <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">project</a> so it’s set for you). I’ve called my folder <em>“Exports”</em>.</p>
+<div id="load-packages" class="section level3">
+<h3>Load packages</h3>
+<p>Open RStudio, and create a new R script (I recommend saving it with an appropriate name straight away).</p>
+<p>Below are the packages we’ll need for this process. I’ve already installed them, so I’m only loading them here (and have commented out the installation commands at the top), but if you haven’t previously installed them then you’ll need to delete the hashtags at the beginning of the lines and run the top parts first (<em>only needs to be done once</em>). The install might take a while (<em>minutes, not hours</em>), and you might need to follow some prompts in the R console (bottom left window of RStudio) for the process to fully complete.</p>
+<p>Note that I’m using a Windows computer (hence the <code>device = "win"</code> component of the code). I believe R works much better with fonts on Macs and this part of that line isn’t required (<code>extrafont::loadfonts()</code> should work, <em>I’m interested to know if anyone reading is using a Mac</em>).</p>
+<pre class="r"><code># install.packages(&quot;extrafont&quot;)
+# extrafont::font_import()
+# install.packages(&quot;tidyverse&quot;)
+# install.packages(&quot;lubridate&quot;)
+# install.packages(&quot;ggtext&quot;)
+# install.packages(&quot;here&quot;)
+
+
+extrafont::loadfonts(device = &quot;win&quot;)
+library(tidyverse)
+library(lubridate)
+library(ggtext)
+library(here)</code></pre>
+</div>
+<div id="import-files" class="section level3">
+<h3>Import files</h3>
+<p>Now, assuming you have a folder of your exports in your working directory (<em>I have all mine in a folder called “Exports”</em>), we can use a combination of the <code>read_csv()</code> and <code>list.files()</code> functions to:</p>
+<ul>
+<li>Import all files within your folder that include <code>.csv</code> in their filename into RStudio at once</li>
+<li>Skip the first 9 lines (which is metadata we don’t need)</li>
+<li>Join them all together and call this data frame “<code>data</code>”</li>
+<li>Filter away any period-level data so only activity-level rows remains (i.e. session totals)</li>
+</ul>
+<p>We’ll also <code>select()</code> only the <code>Date</code>, <code>Player Name</code>, and <code>Running Imbalance</code> columns (all others are discarded), and use <code>mutate()</code> with <code>dmy()</code> to tell R that our <code>Date</code> variable should be in a date format.</p>
+<pre class="r"><code>data &lt;-
+  list.files(path = here(&quot;Exports&quot;),
+             pattern = &quot;*.csv&quot;, 
+             full.names = T) %&gt;%
+  map_df(~read_csv(., skip = 9)) %&gt;%
+  filter(`Period Name` == &quot;Session&quot;) %&gt;% 
+  select(`Date`,
+         `Player Name`,
+         `Running Imbalance`) %&gt;%
+  mutate(Date = dmy(Date))</code></pre>
+<p>For everyone following along that uses the Catapult system and can access their team’s data, the code above is what’s required to import all your data into R. <em>For those that just want to follow along with some dummy data in the same format, you can click <a href="https://drive.google.com/uc?export=download&amp;id=1yU34CWCPi-iq06OfCDwz65jFU7PiwBAC">here</a> to download my example <code>.csv</code> file</em>.</p>
+<p>For privacy reasons, I’ll continue the tutorial using the dummy data contained in my <code>.csv</code> file. Note that all code from Step 3 onwards works on data imported either way (i.e. from either your own Openfield exports (method above) or my example <code>.csv</code> (method below)).</p>
+<p>The import for the <code>.csv</code> file is much simpler:</p>
+<pre class="r"><code>data &lt;- read_csv(&quot;example_running_imbalance_data.csv&quot;) %&gt;%
+  mutate(Date = dmy(Date))</code></pre>
+<p>The first 6 rows of data (251 rows, 3 columns in total) look like this:</p>
+<table class="table" style="font-size: 12px; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+Date
+</th>
+<th style="text-align:center;">
+Player Name
+</th>
+<th style="text-align:center;">
+Running Imbalance
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+2020-07-06
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+0.94264
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2020-07-06
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+-1.23166
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2020-07-07
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+0.87172
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2020-07-10
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+-0.88351
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2020-07-13
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+-0.90294
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2020-07-13
+</td>
+<td style="text-align:center;">
+Player Q
+</td>
+<td style="text-align:center;">
+-0.24748
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="step-3-visualise-using-ggplot2" class="section level1">
+<h1>Step 3 | Visualise using {ggplot2}</h1>
+<p>It’s beyond the scope of this post to go into full details of what each part of this <code>ggplot2</code> code is doing (I have done this for a previous post where <a href="https://www.mitchhenderson.org/2020/04/how-sports-scientists-can-use-ggplot2-in-r-to-make-better-visualisations/">I built a more sophisticated chart step-by-step for those interested</a>).</p>
+<p>In an attempt to avoid telling you all to just <em>“draw the rest of the damn owl”</em>, I’ll heavily comment my code so the purpose of all major functions are clear (<a href="https://knowyourmeme.com/memes/how-to-draw-an-owl">context for the owl meme reference</a>).</p>
+<p><img src="https://www.mitchhenderson.org/img/owl.jpg" /></p>
+<pre class="r"><code># Create an object called min_date representing the minimum value in my `Date` column
+# Same thing for max_date with maximum value
+
+min_date &lt;- min(data$Date)
+max_date &lt;- max(data$Date)
+
+# We&#39;re taking the object called `data` and creating a ggplot with `Date` on the x-axis and
+# `Running Imbalance` on the y-axis
+
+data %&gt;%
+  ggplot(aes(x = Date, y = `Running Imbalance`)) +
+  
+# Put a coloured rectangle that spans the width of the plot, and from -5% to 5% on the y-axis. 
+  
+  annotate(&quot;rect&quot;, 
+           xmin = min_date, xmax = max_date, ymin = -5, ymax = 5, 
+           alpha = .1, fill = &quot;#3A86FF&quot;) +
+  
+# Create a text string that says &quot;Left / Right side bias&quot; with an arrow in the specified location.  
+  annotate(&quot;text&quot;, x = min_date + 8.5, y = -7.5, 
+           label = paste0(&quot;Left side bias &quot;, sprintf(&#39;\u2193&#39;)), 
+           size = 3.5, colour = &quot;grey45&quot;, family = &quot;Segoe UI&quot;) +
+  
+  annotate(&quot;text&quot;, x = min_date + 9.25, y = 8, 
+           label = paste0(&quot;Right side bias &quot;, sprintf(&#39;\u2191&#39;)), 
+           size = 3.5, colour = &quot;grey45&quot;, family = &quot;Segoe UI&quot;) +
+  
+# Facet the chart so each player in the `Player Name` column will have their own chart
+  
+  facet_wrap(~`Player Name`) +
+  
+# Create a horizontal line through the middle of each chart 
+  
+  geom_hline(yintercept = 0, size = 1) +
+  
+# Add dots that represent each data point
+  
+  geom_point() +
+  
+# Add a smoothed conditional mean line through the data points to aid the eye in seeing patterns.
+  
+  geom_smooth(se = F, size = 2, colour = &quot;#F72585&quot;) +
+  
+# Remove x axis title; add chart title, subtitle, caption, and y-axis title
+# Note the {ggtext} package allows us to use a little HTML to get coloured text!
+  
+  labs(x = NULL, y = &quot;**Running Imbalance (%)**&quot;, 
+       title = &quot;Running symmetry metrics can be used to monitor changes in running mechanics&quot;, 
+       subtitle = &quot;Session running imbalance **values** and 
+       &lt;span style = &#39;color:#F72585;&#39;&gt;**trends**&lt;/span&gt; 
+       in relation to &lt;span style = &#39;color:#3A86FF;&#39;&gt;**normal variation**&lt;/span&gt;
+     between players&quot;,
+       caption = &quot;Data: Catapult Vector GPS Units&quot;) +
+  
+# Give the chart a particular look using themes and theme options.
+# I&#39;ve removed unnecessary parts, changed the font, and made some parts bold.
+  
+  theme_minimal() +
+  theme(text = element_text(family = &quot;Segoe UI&quot;),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.title.y = element_markdown(size = 12),
+        strip.text = element_markdown(face = &quot;bold&quot;),
+        axis.text.x = element_blank(),
+        plot.title = element_markdown(face = &quot;bold&quot;, size = 18),
+        plot.subtitle = element_markdown(size = 14)) +
+  
+# Save the output in our working directory.  
+  
+  ggsave(&quot;left_vs_right.png&quot;, width = 10.7, height = 5.75)</code></pre>
+<p><img src="https://www.mitchhenderson.org/img/left_vs_right.png" /></p>
+<p>And that’s it! Let me know if you have any questions or want me to clarify anything. Very interested to hear your ideas about running symmetry / imbalance data and how it can be best visualised / presented.</p>
+<p>If the interest is there, I can do a video walkthrough of this process (similar to my others on <a href="https://www.youtube.com/watch?v=VSrGkZgFP1E&amp;ab_channel=MitchHenderson">constructing a ggplot</a> and <a href="https://www.youtube.com/watch?v=N0DCRqqSKPw&amp;t=41s&amp;ab_channel=MitchHenderson">tidying data</a>).</p>
+<p><strong>Keep up to date with anything new from me on <a href="https://twitter.com/mitchhendo_">my Twitter</a>.</strong></p>
+<p><br></p>
+<p>Cheers,</p>
+<p>Mitch</p>
+<p><br></p>
+<p><em>Cover image from <a href="https://unsplash.com/">Unsplash</a> and thumbnail from <a href="https://www.catapultsports.com/">Catapult</a></em></p>
+<p><strong>Full code:</strong></p>
+<pre class="r"><code># Install packages --------------------------------------------------------
+
+# install.packages(&quot;extrafont&quot;)
+# extrafont::font_import()
+# install.packages(&quot;tidyverse&quot;)
+# install.packages(&quot;lubridate&quot;)
+# install.packages(&quot;ggtext&quot;)
+# install.packages(&quot;here&quot;)
+
+
+# Load packages -----------------------------------------------------------
+
+extrafont::loadfonts(device = &quot;win&quot;)
+library(tidyverse)
+library(lubridate)
+library(ggtext)
+library(here)
+
+
+
+# Import ------------------------------------------------------------------
+
+# Full import method using your own exports from Openfield ↓
+
+data &lt;-
+  list.files(path = here(&quot;Exports&quot;),
+             pattern = &quot;*.csv&quot;, 
+             full.names = T) %&gt;%
+  map_df(~read_csv(., skip = 9)) %&gt;%
+  filter(`Period Name` == &quot;Session&quot;) %&gt;% 
+  select(`Date`,
+         `Player Name`,
+         `Running Imbalance`) %&gt;%
+  mutate(Date = dmy(Date))
+
+# Import method using my `.csv` file that can be downloaded on my post ↓
+
+data &lt;- read_csv(&quot;example_running_imbalance_data.csv&quot;) %&gt;%
+  mutate(Date = dmy(Date))
+
+
+
+# Visualise -------------------------------------------------------------------
+
+min_date &lt;- min(data$Date)
+max_date &lt;- max(data$Date)
+
+
+data %&gt;%
+  ggplot(aes(x = Date, y = `Running Imbalance`)) +
+  annotate(&quot;rect&quot;, 
+           xmin = min_date, xmax = max_date, ymin = -5, ymax = 5, 
+           alpha = .1, fill = &quot;#3A86FF&quot;) +
+  annotate(&quot;text&quot;, x = min_date + 8.5, y = -7.5, 
+           label = paste0(&quot;Left side bias &quot;, sprintf(&#39;\u2193&#39;)), 
+           size = 3.5, colour = &quot;grey45&quot;, family = &quot;Segoe UI&quot;) +
+  annotate(&quot;text&quot;, x = min_date + 9.25, y = 8, 
+           label = paste0(&quot;Right side bias &quot;, sprintf(&#39;\u2191&#39;)), 
+           size = 3.5, colour = &quot;grey45&quot;, family = &quot;Segoe UI&quot;) +
+  facet_wrap(~`Player Name`) +
+  geom_hline(yintercept = 0, size = 1) +
+  geom_point() +
+  geom_smooth(se = F, size = 2, colour = &quot;#F72585&quot;) +
+  labs(x = NULL, y = &quot;**Running Imbalance (%)**&quot;, 
+       title = &quot;Running symmetry metrics can be used to monitor changes in running mechanics&quot;, 
+       subtitle = &quot;Session running imbalance **values** and 
+       &lt;span style = &#39;color:#F72585;&#39;&gt;**trends**&lt;/span&gt; 
+       in relation to &lt;span style = &#39;color:#3A86FF;&#39;&gt;**normal variation**&lt;/span&gt;
+     between players&quot;,
+       caption = &quot;Data: Catapult Vector GPS Units&quot;) +
+  theme_minimal() +
+  theme(text = element_text(family = &quot;Segoe UI&quot;),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.title.y = element_markdown(size = 12),
+        strip.text = element_markdown(face = &quot;bold&quot;),
+        axis.text.x = element_blank(),
+        plot.title = element_markdown(face = &quot;bold&quot;, size = 18),
+        plot.subtitle = element_markdown(size = 14)) +
+  ggsave(&quot;left_vs_right.png&quot;, width = 10.7, height = 5.75)</code></pre>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">TAGGED IN</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://www.mitchhenderson.org/tags/dataviz/">dataviz</a>
+
+  <a class="tag tag--primary tag--small" href="https://www.mitchhenderson.org/tags/r/">R</a>
+
+                  </div>
+                
+              
+            
+            <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/" data-tooltip="Visualising Apple Health data | Guest post by Heidi Thornton">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2021 Mitch Henderson. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+        <div class="post-actions-wrap">
+  
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://www.mitchhenderson.org/2020/05/visualising-data-measured-from-activity-watches/" data-tooltip="Visualising Apple Health data | Guest post by Heidi Thornton">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  
+</div>
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fwww.mitchhenderson.org%2F2021%2F02%2Fexploring-catapults-running-symmetry-data%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="https://www.gravatar.com/avatar/24dfa41ad3adc93d757d2c53cb4405d3?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Mitch Henderson</h4>
+    
+      <div id="about-card-bio">Athletic Performance Coach<!-- raw HTML omitted -->Sports Scientist</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Australian Mens 7s<!-- raw HTML omitted -->Rugby Australia
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        Sydney, Australia
+      </div>
+    
+  </div>
+</div>
+
+    
+
+    
+  
+    
+      <div id="cover" style="background-image:url('https://www.mitchhenderson.org/img/black.jpg');"></div>
+    
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
+
+
+<script src="https://www.mitchhenderson.org/js/script-pcw6v3xilnxydl1vddzazdverrnn9ctynvnxgwho987mfyqkuylcb1nlt.min.js"></script>
+
+
+<script lang="javascript">
+window.onload = updateMinWidth;
+window.onresize = updateMinWidth;
+document.getElementById("sidebar").addEventListener("transitionend", updateMinWidth);
+function updateMinWidth() {
+  var sidebar = document.getElementById("sidebar");
+  var main = document.getElementById("main");
+  main.style.minWidth = "";
+  var w1 = getComputedStyle(main).getPropertyValue("min-width");
+  var w2 = getComputedStyle(sidebar).getPropertyValue("width");
+  var w3 = getComputedStyle(sidebar).getPropertyValue("left");
+  main.style.minWidth = `calc(${w1} - ${w2} - ${w3})`;
+}
+</script>
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/www.mitchhenderson.org\/2021\/02\/exploring-catapults-running-symmetry-data\/';
+          
+            this.page.identifier = '\/2021\/02\/exploring-catapults-running-symmetry-data\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'mitchhenderson-org';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+
+    
+  </body>
+</html>
+

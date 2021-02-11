@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sport science on mitchhenderson.org</title>
+    <link>https://www.mitchhenderson.org/categories/sport-science/</link>
+    <description>Recent content in Sport science on mitchhenderson.org</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 10 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.mitchhenderson.org/categories/sport-science/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploring Catapult&#39;s running imbalance data</title>
+      <link>https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mitchhenderson.org/2021/02/exploring-catapults-running-symmetry-data/</guid>
+      <description>Running symmetry data can inform monitoring, rehab, and return to play processes. This post shows how it can be exported from Catapult Openfield, then imported and visualisd in R.</description>
+    </item>
+    
+  </channel>
+</rss>

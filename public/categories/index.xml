@@ -6,17 +6,22 @@
     <description>Recent content in Categories on mitchhenderson.org</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 19 May 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://www.mitchhenderson.org/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 10 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://www.mitchhenderson.org/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Data science</title>
       <link>https://www.mitchhenderson.org/categories/data-science/</link>
-      <pubDate>Tue, 19 May 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
       
       <guid>https://www.mitchhenderson.org/categories/data-science/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sport science</title>
+      <link>https://www.mitchhenderson.org/categories/sport-science/</link>
+      <pubDate>Wed, 10 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.mitchhenderson.org/categories/sport-science/</guid>
       <description></description>
     </item>
     
